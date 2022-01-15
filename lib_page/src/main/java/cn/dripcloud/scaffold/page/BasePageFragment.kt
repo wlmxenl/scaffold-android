@@ -29,7 +29,7 @@ abstract class BasePageFragment<VB : ViewBinding, APPBAR: IAppBarView<out View>>
         savedInstanceState: Bundle?
     ): View {
         binding = onCreateViewBinding(inflater, container, false)
-        pageStateView = onCreateMultiStateView()?.apply {
+        pageStateView = onCreatePageStateView()?.apply {
             setRetryClickListener {
                 loadPageData()
             }

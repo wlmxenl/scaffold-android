@@ -12,5 +12,5 @@ interface IBasePage<VB : ViewBinding, APPBAR: IAppBarView<out View>> {
     fun doBusiness()
     fun loadPageData()
     fun onCreateAppBarView(): APPBAR?
-    fun onCreateMultiStateView(): IPageStateView?
+    fun onCreatePageStateView(): IPageStateView?
 }

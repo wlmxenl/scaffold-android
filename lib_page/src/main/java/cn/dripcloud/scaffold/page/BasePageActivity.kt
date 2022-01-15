@@ -19,7 +19,7 @@ abstract class BasePageActivity<VB : ViewBinding, APPBAR: IAppBarView<out View>>
         onBeforeSetContentView()
         binding = onCreateViewBinding(layoutInflater, null, false)
         appBarView = onCreateAppBarView()
-        pageStateView = onCreateMultiStateView()?.apply {
+        pageStateView = onCreatePageStateView()?.apply {
             setRetryClickListener {
                 loadPageData()
             }
