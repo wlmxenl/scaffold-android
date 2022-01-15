@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import cn.dripcloud.scaffold.page.databinding.PageContainerBinding
+import cn.dripcloud.scaffold.page.databinding.ScaffoldPageContainerBinding
 
 class PageDelegate(
     context: Context,
@@ -20,7 +20,7 @@ class PageDelegate(
             rootView = layoutView
         } else {
             // 在原布局外包装一层View，嵌入顶部导航栏和多状态视图
-            val binding = PageContainerBinding.inflate(LayoutInflater.from(context))
+            val binding = ScaffoldPageContainerBinding.inflate(LayoutInflater.from(context))
             rootView = binding.root
 
             // 顶部导航栏
