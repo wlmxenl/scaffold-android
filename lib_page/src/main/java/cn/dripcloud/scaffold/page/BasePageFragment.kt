@@ -63,7 +63,7 @@ abstract class BasePageFragment<VB : ViewBinding, APPBAR: IAppBarView<out View>>
 
     private val mOnBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            if (!onInterceptBackEvent()) {
+            if (!onInterceptBackPressedEvent()) {
                 isEnabled = false
                 requireActivity().onBackPressedDispatcher.onBackPressed()
                 isEnabled = true
@@ -71,7 +71,5 @@ abstract class BasePageFragment<VB : ViewBinding, APPBAR: IAppBarView<out View>>
         }
     }
 
-    open fun onInterceptBackEvent(): Boolean {
-        return false
-    }
+    open fun onInterceptBackPressedEvent() = false
 }
