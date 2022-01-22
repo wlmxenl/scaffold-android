@@ -16,6 +16,11 @@ abstract class BasePageFragment<VB : ViewBinding, APPBAR: IAppBarView<out View>>
     protected var pageStateView: IPageStateView? = null
     protected var isPageLoaded = false
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initData(savedInstanceState)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -24,17 +29,12 @@ abstract class BasePageFragment<VB : ViewBinding, APPBAR: IAppBarView<out View>>
         binding = onCreateViewBinding(inflater, container, false)
         pageStateView = onCreatePageStateView()?.apply {
             setRetryClickListener {
-                loadPageData()
+                loadData()
             }
         }
         appBarView = onCreateAppBarView()
         val pageDelegate = PageDelegate(requireActivity(), binding.root, appBarView, pageStateView)
         return pageDelegate.rootView
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initViewAndData(view, savedInstanceState)
     }
 
     override fun onResume() {
@@ -50,8 +50,8 @@ abstract class BasePageFragment<VB : ViewBinding, APPBAR: IAppBarView<out View>>
     }
 
     private fun onLazyInitInternal() {
-        doBusiness()
-        loadPageData()
+        initView()
+        loadData()
         // 自定义返回导航
         requireActivity().onBackPressedDispatcher.addCallback(this, mOnBackPressedCallback)
     }

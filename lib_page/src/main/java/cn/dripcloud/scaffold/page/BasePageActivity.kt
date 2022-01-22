@@ -15,21 +15,21 @@ abstract class BasePageActivity<VB : ViewBinding, APPBAR: IAppBarView<out View>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initData(savedInstanceState)
         activity = this
         onBeforeSetContentView()
         binding = onCreateViewBinding(layoutInflater, null, false)
         appBarView = onCreateAppBarView()
         pageStateView = onCreatePageStateView()?.apply {
             setRetryClickListener {
-                loadPageData()
+                loadData()
             }
         }
         val pageDelegate = PageDelegate(activity, binding.root, appBarView, pageStateView)
         setContentView(pageDelegate.rootView)
         onAfterSetContentView()
-        initViewAndData(binding.root, savedInstanceState)
-        doBusiness()
-        loadPageData()
+        initView()
+        loadData()
     }
 
     /**
