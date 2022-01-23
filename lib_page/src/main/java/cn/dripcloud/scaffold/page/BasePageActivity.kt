@@ -15,7 +15,6 @@ abstract class BasePageActivity<VB : ViewBinding, APPBAR: IAppBarView<out View>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initData(savedInstanceState)
         activity = this
         onBeforeSetContentView()
         binding = onCreateViewBinding(layoutInflater, null, false)
@@ -28,7 +27,7 @@ abstract class BasePageActivity<VB : ViewBinding, APPBAR: IAppBarView<out View>>
         val pageDelegate = PageDelegate(activity, binding.root, appBarView, pageStateView)
         setContentView(pageDelegate.rootView)
         onAfterSetContentView()
-        initView()
+        onPageViewCreated(savedInstanceState)
         loadData()
     }
 

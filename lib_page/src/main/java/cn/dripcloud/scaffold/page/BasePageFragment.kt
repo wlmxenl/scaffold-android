@@ -1,11 +1,11 @@
 package cn.dripcloud.scaffold.page
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
@@ -14,12 +14,10 @@ abstract class BasePageFragment<VB : ViewBinding, APPBAR: IAppBarView<out View>>
     protected lateinit var binding: VB
     protected var appBarView: APPBAR? = null
     protected var pageStateView: IPageStateView? = null
-    protected var isPageLoaded = false
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initData(savedInstanceState)
-    }
+    private var mTmpSavedFragmentState: Bundle? = null
+    private var mIsEnterAnimationEnd = true
+    protected var isLazyInitCompleted = false
+    protected var executeLoadDataAfterAnimationEnd = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,28 +35,74 @@ abstract class BasePageFragment<VB : ViewBinding, APPBAR: IAppBarView<out View>>
         return pageDelegate.rootView
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // 自定义返回导航
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, mOnBackPressedCallback)
+    }
+
     override fun onResume() {
         super.onResume()
         // 配合 setMaxLifecycle 实现懒加载
-        if (!isPageLoaded && !isHidden) {
-            val lazyInit = {
-                onLazyInitInternal()
-                isPageLoaded = true
+        onLazyInit()
+    }
+
+    private fun onLazyInit() {
+        if (!isLazyInitCompleted && !isHidden) {
+            onPageViewCreated(mTmpSavedFragmentState)
+            mTmpSavedFragmentState = null
+            if (mIsEnterAnimationEnd) {
+                executeLoadDataAfterAnimationEnd = false
+                onEnterAnimationEnd()
             }
-            Handler(Looper.getMainLooper()).postDelayed(lazyInit, 160)
+            if (!executeLoadDataAfterAnimationEnd) {
+                loadData()
+            }
+            isLazyInitCompleted = true
         }
     }
 
-    private fun onLazyInitInternal() {
-        initView()
-        loadData()
-        // 自定义返回导航
-        requireActivity().onBackPressedDispatcher.addCallback(this, mOnBackPressedCallback)
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        if (enter && nextAnim != 0) {
+            kotlin.runCatching {
+                AnimationUtils.loadAnimation(activity, nextAnim)
+            }.onSuccess {
+                mIsEnterAnimationEnd = false
+                return it.apply {
+                    setAnimationListener(object : Animation.AnimationListener {
+                        override fun onAnimationStart(animation: Animation?) {
+
+                        }
+
+                        override fun onAnimationEnd(animation: Animation?) {
+                            mIsEnterAnimationEnd = true
+                            onEnterAnimationEnd()
+                            if (executeLoadDataAfterAnimationEnd) {
+                                loadData()
+                            }
+                        }
+
+                        override fun onAnimationRepeat(animation: Animation?) {
+                        }
+                    })
+                }
+            }
+        }
+        return null
+    }
+
+    open fun onEnterAnimationEnd() {
+
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        mTmpSavedFragmentState = savedInstanceState
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        isPageLoaded = false
+        isLazyInitCompleted = false
     }
 
     private val mOnBackPressedCallback = object : OnBackPressedCallback(true) {
