@@ -1,11 +1,17 @@
 package cn.dripcloud.scaffold.sample
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import cn.dripcloud.scaffold.sample.base.SampleBaseActivity
+import cn.dripcloud.scaffold.sample.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+class MainActivity : SampleBaseActivity<ActivityMainBinding>() {
+
+    override fun onPageViewCreated(savedInstanceState: Bundle?) {
+
     }
+
+    override fun loadData() {
+
+    }
+
 }
