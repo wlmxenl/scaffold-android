@@ -11,20 +11,21 @@ import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 
 abstract class BasePageFragment<VB : ViewBinding, APPBAR: IAppBarView<out View>> : Fragment(), IBasePage<VB, APPBAR> {
-    protected lateinit var binding: VB
+    private var _binding: VB? = null
+    protected val binding get() = _binding!!
+
     protected var appBarView: APPBAR? = null
     protected var pageStateView: IPageStateView? = null
     private var mTmpSavedFragmentState: Bundle? = null
     private var mIsEnterAnimationEnd = true
     protected var isLazyInitCompleted = false
-    protected var executeLoadDataAfterAnimationEnd = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = onCreateViewBinding(inflater, container, false)
+        _binding = onCreateViewBinding(inflater, container, false)
         pageStateView = onCreatePageStateView()?.apply {
             setRetryClickListener {
                 loadData()
@@ -51,12 +52,9 @@ abstract class BasePageFragment<VB : ViewBinding, APPBAR: IAppBarView<out View>>
         if (!isLazyInitCompleted && !isHidden) {
             onPageViewCreated(mTmpSavedFragmentState)
             mTmpSavedFragmentState = null
+            loadData()
             if (mIsEnterAnimationEnd) {
-                executeLoadDataAfterAnimationEnd = false
                 onEnterAnimationEnd()
-            }
-            if (!executeLoadDataAfterAnimationEnd) {
-                loadData()
             }
             isLazyInitCompleted = true
         }
@@ -70,20 +68,14 @@ abstract class BasePageFragment<VB : ViewBinding, APPBAR: IAppBarView<out View>>
                 mIsEnterAnimationEnd = false
                 return it.apply {
                     setAnimationListener(object : Animation.AnimationListener {
-                        override fun onAnimationStart(animation: Animation?) {
-
-                        }
+                        override fun onAnimationStart(animation: Animation?) {}
 
                         override fun onAnimationEnd(animation: Animation?) {
                             mIsEnterAnimationEnd = true
                             onEnterAnimationEnd()
-                            if (executeLoadDataAfterAnimationEnd) {
-                                loadData()
-                            }
                         }
 
-                        override fun onAnimationRepeat(animation: Animation?) {
-                        }
+                        override fun onAnimationRepeat(animation: Animation?) {}
                     })
                 }
             }
@@ -91,9 +83,7 @@ abstract class BasePageFragment<VB : ViewBinding, APPBAR: IAppBarView<out View>>
         return null
     }
 
-    open fun onEnterAnimationEnd() {
-
-    }
+    open fun onEnterAnimationEnd() {}
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
@@ -102,6 +92,7 @@ abstract class BasePageFragment<VB : ViewBinding, APPBAR: IAppBarView<out View>>
 
     override fun onDestroyView() {
         super.onDestroyView()
+        _binding = null
         isLazyInitCompleted = false
     }
 
