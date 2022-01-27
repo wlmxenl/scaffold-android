@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import cn.dripcloud.scaffold.page.IPageStateView
-import cn.dripcloud.scaffold.page.PageState
 import cn.dripcloud.scaffold.sample.R
 import cn.dripcloud.scaffold.sample.databinding.SamplePagestateViewBinding
 import com.blankj.utilcode.util.ClickUtils
@@ -17,7 +16,7 @@ import com.blankj.utilcode.util.ClickUtils
  */
 class SamplePageStateView(context: Context) : FrameLayout(context), IPageStateView {
     private val binding: SamplePagestateViewBinding
-    private var mPageState = PageState.CONTENT
+    private var mPageState = IPageStateView.STATE_CONTENT
 
     init {
         binding = inflate(context, R.layout.sample_pagestate_view, this).run {
@@ -33,16 +32,17 @@ class SamplePageStateView(context: Context) : FrameLayout(context), IPageStateVi
 
     override fun getContentView(): View = this
 
-    override fun setPageState(state: PageState) {
+    override fun setPageState(state: Int) {
     }
 
-    override fun getPageState(): PageState = mPageState
+    override fun getPageState() = mPageState
 
-    override fun getView(state: PageState): ViewGroup? {
+    override fun getView(state: Int): ViewGroup? {
         return when(state) {
-            PageState.LOADING -> binding.stateLoadingLayout
-            PageState.EMPTY -> binding.stateEmptyLayout
-            PageState.ERROR -> binding.stateErrorLayout
+            IPageStateView.STATE_LOADING -> binding.stateLoadingLayout
+            IPageStateView.STATE_EMPTY -> binding.stateEmptyLayout
+            IPageStateView.STATE_ERROR -> binding.stateErrorLayout
+            IPageStateView.STATE_CONTENT -> binding.stateCustomLayout
             else -> null
         }
     }

@@ -5,19 +5,28 @@ import android.view.ViewGroup
 
 interface IPageStateView {
 
+    companion object {
+        const val STATE_LOADING = 1
+        const val STATE_EMPTY = 2
+        const val STATE_ERROR = 3
+        const val STATE_CONTENT = 4
+        const val STATE_CUSTOM = 5
+    }
+
     fun getContentView(): View
 
-    fun setPageState(state: PageState)
+    fun setPageState(state: Int)
 
-    fun getPageState(): PageState
+    fun getPageState(): Int
 
-    fun getView(state: PageState): ViewGroup?
+    fun getView(state: Int): ViewGroup?
 
     fun addStateChangeListener (listener: OnStateChangeListener?)
 
     fun setRetryClickListener(listener: View.OnClickListener?)
 
     interface OnStateChangeListener {
-        fun onStateChanged(state: PageState)
+        fun onStateChanged(state: Int)
     }
+
 }
