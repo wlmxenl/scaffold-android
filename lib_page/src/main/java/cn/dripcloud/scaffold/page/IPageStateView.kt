@@ -19,11 +19,11 @@ interface IPageStateView {
 
     fun getPageState(): Int
 
-    fun getView(state: Int): ViewGroup?
-
-    fun addStateChangeListener (listener: OnStateChangeListener?)
+    fun getStateContainer(state: Int): ViewGroup?
 
     fun setRetryClickListener(listener: View.OnClickListener?)
+
+    fun addStateChangeListener (listener: OnStateChangeListener?)
 
     interface OnStateChangeListener {
         fun onStateChanged(state: Int)

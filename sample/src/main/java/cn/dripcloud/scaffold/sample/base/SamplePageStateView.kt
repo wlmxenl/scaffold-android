@@ -37,7 +37,7 @@ class SamplePageStateView(context: Context) : FrameLayout(context), IPageStateVi
 
     override fun getPageState() = mPageState
 
-    override fun getView(state: Int): ViewGroup? {
+    override fun getStateContainer(state: Int): ViewGroup? {
         return when(state) {
             IPageStateView.STATE_LOADING -> binding.stateLoadingLayout
             IPageStateView.STATE_EMPTY -> binding.stateEmptyLayout
@@ -52,4 +52,5 @@ class SamplePageStateView(context: Context) : FrameLayout(context), IPageStateVi
 
     override fun setRetryClickListener(listener: View.OnClickListener?) {
     }
+
 }
