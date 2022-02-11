@@ -10,11 +10,11 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 
-abstract class BasePageFragment<VB : ViewBinding, APPBAR: IAppBarView<out View>> : Fragment(), IBasePage<VB, APPBAR> {
+@Suppress("UNCHECKED_CAST")
+abstract class BasePageFragment<VB : ViewBinding, AppBarView : View> : Fragment(), IBasePage<VB> {
     private var _binding: VB? = null
     protected val binding get() = _binding!!
-
-    protected var appBarView: APPBAR? = null
+    protected var appBarView: AppBarView? = null
     protected var pageStateView: IPageStateView? = null
     private var mTmpSavedFragmentState: Bundle? = null
     private var mIsEnterAnimationEnd = true
@@ -31,7 +31,7 @@ abstract class BasePageFragment<VB : ViewBinding, APPBAR: IAppBarView<out View>>
                 loadData()
             }
         }
-        appBarView = onCreateAppBarView()
+        appBarView = onCreateAppBarView() as? AppBarView
         val pageDelegate = PageDelegate(requireActivity(), binding.root, appBarView, pageStateView)
         return pageDelegate.rootView
     }

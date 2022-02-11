@@ -6,11 +6,11 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 
-abstract class BasePageActivity<VB : ViewBinding, APPBAR: IAppBarView<out View>> :
-    AppCompatActivity(), IBasePage<VB, APPBAR> {
+@Suppress("UNCHECKED_CAST")
+abstract class BasePageActivity<VB : ViewBinding, AppBarView : View> : AppCompatActivity(), IBasePage<VB> {
     protected lateinit var activity: Activity
     protected lateinit var binding: VB
-    protected var appBarView: APPBAR? = null
+    protected var appBarView: AppBarView? = null
     protected var pageStateView: IPageStateView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,7 +18,7 @@ abstract class BasePageActivity<VB : ViewBinding, APPBAR: IAppBarView<out View>>
         activity = this
         onBeforeSetContentView()
         binding = onCreateViewBinding(layoutInflater, null, false)
-        appBarView = onCreateAppBarView()
+        appBarView = onCreateAppBarView() as? AppBarView
         pageStateView = onCreatePageStateView()?.apply {
             setRetryClickListener {
                 loadData()

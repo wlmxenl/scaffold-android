@@ -15,10 +15,7 @@ class MineFragment : SampleBaseFragment<MineFragmentLayoutBinding>() {
     override fun onPageViewCreated(savedInstanceState: Bundle?) {
         appBarView?.let {
             it.binding.ivBack.visibility = View.GONE
+            it.setTitle("Mine")
         }
     }
-
-    override fun loadData() {
-    }
-
 }

@@ -10,7 +10,7 @@ import cn.dripcloud.scaffold.page.databinding.ScaffoldPageContainerBinding
 class PageDelegate(
     context: Context,
     layoutView: View,
-    appBarView: IAppBarView<out View>? = null,
+    appBarView: View? = null,
     pageStateView: IPageStateView? = null) {
 
     var rootView: View
@@ -25,7 +25,7 @@ class PageDelegate(
 
             // 顶部导航栏
             var mAppBarViewId = View.NO_ID
-            appBarView?.getContentView()?.let {
+            appBarView?.let {
                 if (it.id == View.NO_ID) {
                     it.id = View.generateViewId()
                 }

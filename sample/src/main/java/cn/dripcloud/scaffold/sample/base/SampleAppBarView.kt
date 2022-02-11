@@ -2,7 +2,6 @@ package cn.dripcloud.scaffold.sample.base
 
 import android.content.Context
 import android.widget.RelativeLayout
-import cn.dripcloud.scaffold.page.IAppBarView
 import cn.dripcloud.scaffold.sample.R
 import cn.dripcloud.scaffold.sample.databinding.SampleAppbarViewBinding
 import com.zackratos.ultimatebarx.ultimatebarx.java.UltimateBarX
@@ -12,7 +11,7 @@ import com.zackratos.ultimatebarx.ultimatebarx.java.UltimateBarX
  * @Author wangzhengfu
  * @Date 2022/1/23
  */
-class SampleAppBarView(context: Context) : RelativeLayout(context), IAppBarView<SampleAppBarView> {
+class SampleAppBarView(context: Context) : RelativeLayout(context) {
     val binding: SampleAppbarViewBinding
 
     init {
@@ -27,6 +26,4 @@ class SampleAppBarView(context: Context) : RelativeLayout(context), IAppBarView<
     fun setTitle(title: String?) {
         binding.tvTitle.text = title
     }
-
-    override fun getContentView() = this
 }
