@@ -5,12 +5,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
         applicationId "cn.dripcloud.scaffold.sample"
-        minSdkVersion 21
-        targetSdkVersion 30
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -44,15 +44,13 @@ android {
 }
 
 dependencies {
+    implementation project(":lib_page")
     implementation project(":lib_arch")
-    implementation 'com.google.android.material:material:1.4.0'
+    implementation "com.google.android.material:material:${versions.material}"
 
     implementation 'com.blankj:utilcode:1.30.6'
     implementation 'com.github.wlmxenl:ScreenAdaptation:1.0.1@aar'
     implementation 'com.gitee.zackratos:UltimateBarX:0.8.0'
-
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
