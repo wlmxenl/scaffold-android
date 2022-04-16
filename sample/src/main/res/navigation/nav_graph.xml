@@ -2,8 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/home_page_fragment"
-    android:id="@+id/nav_graph">
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/home_page_fragment">
 
     <fragment
         android:id="@+id/home_page_fragment"
@@ -19,5 +19,10 @@
         android:id="@+id/details_page_fragment"
         android:name="cn.dripcloud.scaffold.sample.module.mine.MineFragment"
         tools:layout="@layout/home_fragment_layout" />
+
+    <fragment
+        android:id="@+id/paging_fragment"
+        android:name="cn.dripcloud.scaffold.sample.module.paging_test.SamplePagingFragment"
+        tools:layout="@layout/paging_fragment" />
 
 </navigation>

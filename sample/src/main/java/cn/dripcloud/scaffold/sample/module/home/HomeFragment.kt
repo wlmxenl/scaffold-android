@@ -2,6 +2,8 @@ package cn.dripcloud.scaffold.sample.module.home
 
 import android.os.Bundle
 import android.view.View
+import cn.dripcloud.scaffold.arch.navigation.navigate
+import cn.dripcloud.scaffold.sample.R
 import cn.dripcloud.scaffold.sample.base.SampleBaseFragment
 import cn.dripcloud.scaffold.sample.databinding.HomeFragmentLayoutBinding
 
@@ -16,6 +18,10 @@ class HomeFragment : SampleBaseFragment<HomeFragmentLayoutBinding>() {
         appBarView?.let {
             it.binding.ivBack.visibility = View.GONE
             it.setTitle("Home")
+        }
+
+        binding.btnPaging.setOnClickListener {
+            navigate(R.id.paging_fragment)
         }
     }
 

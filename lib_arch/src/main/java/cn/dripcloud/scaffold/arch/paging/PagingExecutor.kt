@@ -116,20 +116,18 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
             pageStateView?.setPageState(newPageSate)
         }
 
-        // 数据填充完成回调
-        pagingCallback?.onFillDataCompleted(mState)
-
         // 修改分页状态
         mState = if (pagingFinished) PagingState.ON_PAGING_FINISHED else PagingState.ON_LOAD_NEXT_PAGE_DATA
+
+        // 数据填充完成回调
+        pagingCallback?.onFillDataCompleted(mState)
     }
 
     private fun onLoadDataFailed() {
         if (mState == PagingState.ON_LOAD_FIRST_PAGE_DATA || rvAdapter.data.isEmpty()) {
             pageStateView?.setPageState(IPageStateView.STATE_ERROR)
         } else {
-            rvAdapter.loadMoreModule.let {
-                if (it.isLoading) it.loadMoreFail()
-            }
+            rvAdapter.loadMoreModule.loadMoreFail()
         }
         pagingCallback?.onFillDataCompleted(mState)
     }

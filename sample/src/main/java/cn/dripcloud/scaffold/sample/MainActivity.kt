@@ -10,7 +10,6 @@ import cn.dripcloud.scaffold.sample.base.SampleAppBarView
 import cn.dripcloud.scaffold.sample.base.SampleBaseActivity
 import cn.dripcloud.scaffold.sample.databinding.ActivityMainBinding
 import com.blankj.utilcode.util.LogUtils
-import com.google.android.material.navigation.NavigationBarView
 
 class MainActivity : SampleBaseActivity<ActivityMainBinding>() {
 

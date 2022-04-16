@@ -2,6 +2,8 @@ package cn.dripcloud.scaffold.sample
 
 import android.app.Application
 import com.blankj.utilcode.util.Utils
+import rxhttp.RxHttpPlugins
+import rxhttp.wrapper.param.RxHttp
 
 /**
  * Sample Application
@@ -13,5 +15,8 @@ class SampleApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         Utils.init(this)
+
+        RxHttpPlugins.init(null)
+            .setDebug(BuildConfig.DEBUG)
     }
 }
