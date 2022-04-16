@@ -1,6 +1,7 @@
 package cn.dripcloud.scaffold.sample.base
 
 import android.content.Context
+import android.view.View
 import android.widget.RelativeLayout
 import cn.dripcloud.scaffold.sample.R
 import cn.dripcloud.scaffold.sample.databinding.SampleAppbarViewBinding
@@ -12,7 +13,7 @@ import com.zackratos.ultimatebarx.ultimatebarx.java.UltimateBarX
  * @Date 2022/1/23
  */
 class SampleAppBarView(context: Context) : RelativeLayout(context) {
-    val binding: SampleAppbarViewBinding
+    private val binding: SampleAppbarViewBinding
 
     init {
         setPadding(0, UltimateBarX.getStatusBarHeight(), 0, 0)
@@ -25,5 +26,13 @@ class SampleAppBarView(context: Context) : RelativeLayout(context) {
 
     fun setTitle(title: String?) {
         binding.tvTitle.text = title
+    }
+
+    fun hideBackImageView() {
+        binding.ivBack.visibility = View.GONE
+    }
+
+    fun setBackClickListener(listener: OnClickListener?) {
+        binding.ivBack.setOnClickListener(listener)
     }
 }

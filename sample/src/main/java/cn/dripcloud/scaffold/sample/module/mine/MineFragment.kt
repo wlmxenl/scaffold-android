@@ -1,7 +1,6 @@
 package cn.dripcloud.scaffold.sample.module.mine
 
 import android.os.Bundle
-import android.view.View
 import cn.dripcloud.scaffold.sample.base.SampleBaseFragment
 import cn.dripcloud.scaffold.sample.databinding.MineFragmentLayoutBinding
 
@@ -14,7 +13,7 @@ class MineFragment : SampleBaseFragment<MineFragmentLayoutBinding>() {
 
     override fun onPageViewCreated(savedInstanceState: Bundle?) {
         appBarView?.let {
-            it.binding.ivBack.visibility = View.GONE
+            it.hideBackImageView()
             it.setTitle("Mine")
         }
     }

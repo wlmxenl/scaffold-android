@@ -1,7 +1,6 @@
 package cn.dripcloud.scaffold.sample.module.home
 
 import android.os.Bundle
-import android.view.View
 import cn.dripcloud.scaffold.arch.navigation.navigate
 import cn.dripcloud.scaffold.sample.R
 import cn.dripcloud.scaffold.sample.base.SampleBaseFragment
@@ -16,7 +15,7 @@ class HomeFragment : SampleBaseFragment<HomeFragmentLayoutBinding>() {
 
     override fun onPageViewCreated(savedInstanceState: Bundle?) {
         appBarView?.let {
-            it.binding.ivBack.visibility = View.GONE
+            it.hideBackImageView()
             it.setTitle("Home")
         }
 

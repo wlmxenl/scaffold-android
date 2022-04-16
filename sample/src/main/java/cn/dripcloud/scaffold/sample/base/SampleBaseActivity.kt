@@ -11,7 +11,11 @@ import androidx.viewbinding.ViewBinding
 abstract class SampleBaseActivity<VB : ViewBinding> : SampleAbstractActivity<VB, SampleAppBarView>() {
 
     override fun onCreateAppBarView(): View? {
-        return SampleAppBarView(this)
+        return SampleAppBarView(this).apply {
+            setBackClickListener {
+                onBackPressed()
+            }
+        }
     }
 
     override fun loadData() {
