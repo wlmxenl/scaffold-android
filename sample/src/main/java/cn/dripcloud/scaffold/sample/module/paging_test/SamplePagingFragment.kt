@@ -38,6 +38,7 @@ class SamplePagingFragment : SampleBaseFragment<PagingFragmentBinding>() {
             .setAdapter(adapter)
             .bindView(binding.refreshLayout, binding.rvList, pageStateView)
             .setPagingRequest(SamplePagingRequest(viewLifecycleOwner.lifecycleScope))
+            .setShowLoadMoreEndView(false)
             .build()
     }
 

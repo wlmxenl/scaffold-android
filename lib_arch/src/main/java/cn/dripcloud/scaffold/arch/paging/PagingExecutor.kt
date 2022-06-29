@@ -24,6 +24,7 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
         private set
     var isRequesting = false // 防止数据填充不满一屏 并且 可以继续翻页时，会触发2次 onLoadMore
         private set
+    var showLoadMoreEndView = builder.showLoadMoreEndView // 分页结束后是否显示没有更多数据
 
     init {
         refreshLayout?.setOnRefreshListener(this)
@@ -106,7 +107,7 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
         // 修改 LoadMoreView 样式
         rvList.post {
             rvAdapter.loadMoreModule.let {
-                if (pagingFinished) it.loadMoreEnd() else it.loadMoreComplete()
+                if (pagingFinished) it.loadMoreEnd(!showLoadMoreEndView) else it.loadMoreComplete()
             }
         }
 
@@ -156,6 +157,7 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
         internal var refreshLayout: RefreshLayout? = null
         internal lateinit var recyclerView: RecyclerView
         internal lateinit var adapter: BaseQuickAdapter<T, BaseViewHolder>
+        internal var showLoadMoreEndView = true
 
         fun setPagingRequest(request: IPagingRequest<T>) = apply {
             this.pagingRequest = request
@@ -173,6 +175,10 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
 
         fun setAdapter(adapter: BaseQuickAdapter<T, BaseViewHolder>) = apply {
             this.adapter = adapter
+        }
+
+        fun setShowLoadMoreEndView(boolean: Boolean) = apply {
+            this.showLoadMoreEndView = boolean
         }
 
         fun build(): PagingExecutor<T> = PagingExecutor(this)
