@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="cn.dripcloud.scaffold.sample">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -16,6 +17,7 @@
         android:networkSecurityConfig="@xml/network_config"
         android:supportsRtl="true"
         android:name=".SampleApplication"
+        tools:replace="android:networkSecurityConfig"
         android:theme="@style/Theme.AndroidScaffold">
 
         <activity

@@ -1,7 +1,6 @@
 package cn.dripcloud.scaffold.sample.module.paging_test
 
 import android.os.Bundle
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.dripcloud.scaffold.arch.paging.BaseBinderLoadMoreAdapter
 import cn.dripcloud.scaffold.arch.paging.PagingExecutor
@@ -37,7 +36,7 @@ class SamplePagingFragment : SampleBaseFragment<PagingFragmentBinding>() {
         pagingExecutor = PagingExecutor.Builder<Any>()
             .setAdapter(adapter)
             .bindView(binding.refreshLayout, binding.rvList, pageStateView)
-            .setPagingRequest(SamplePagingRequest(viewLifecycleOwner.lifecycleScope))
+            .setPagingRequest(SamplePagingRequest(viewLifecycleOwner))
             .setShowLoadMoreEndView(false)
             .build()
     }

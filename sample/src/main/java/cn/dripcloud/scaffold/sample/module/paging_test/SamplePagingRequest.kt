@@ -1,22 +1,20 @@
 package cn.dripcloud.scaffold.sample.module.paging_test
 
-import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.LifecycleOwner
 import cn.dripcloud.scaffold.arch.paging.IPagingRequest
 import cn.dripcloud.scaffold.arch.paging.PagingState
-import cn.dripcloud.scaffold.sample.BuildConfig
 import com.blankj.utilcode.util.GsonUtils
+import com.drake.net.Get
+import com.drake.net.utils.scopeNetLife
+import com.drake.net.utils.withIO
 import com.google.gson.JsonObject
-import kotlinx.coroutines.launch
-import rxhttp.await
-import rxhttp.toClass
-import rxhttp.wrapper.param.RxHttp
 
 /**
  * 玩 Android 首页文章列表数据请求
  * @author wangzf
  * @date 2022/4/16
  */
-class SamplePagingRequest(private val scope: LifecycleCoroutineScope) : IPagingRequest<Any> {
+class SamplePagingRequest(private val lifecycleOwner: LifecycleOwner) : IPagingRequest<Any> {
     private var curPage = 1
 
     override fun loadData(
@@ -28,30 +26,25 @@ class SamplePagingRequest(private val scope: LifecycleCoroutineScope) : IPagingR
             curPage = 1
         }
 
-        scope.launch {
-            val requestUrl = "https://www.wanandroid.com/article/list/$curPage/json?page_size=20"
+        val requestUrl = "https://www.wanandroid.com/article/list/$curPage/json?page_size=20"
 
-            val rawData = RxHttp.get(requestUrl)
-                .toClass<JsonObject>()
-                .await {
-                    if (BuildConfig.DEBUG) {
-                        it.printStackTrace()
-                    }
-                    JsonObject()
+        lifecycleOwner.scopeNetLife {
+            val bodyString = Get<String>(requestUrl).await()
+            val rawData = withIO {
+                GsonUtils.getGson().fromJson(bodyString, JsonObject::class.java)
+            }
+            val result = withIO {
+                rawData.runCatching {
+                    getAsJsonObject("data")
+                        .let {
+                            GsonUtils.getGson().fromJson<List<SamplePagingItem>>(it.get("datas"),
+                                GsonUtils.getListType(SamplePagingItem::class.java))
+                        }
+                }.onSuccess {
+                    curPage++
                 }
-
-            val result = kotlin.runCatching {
-                val dataObj = rawData.getAsJsonObject("data")
-                GsonUtils.getGson().fromJson<List<SamplePagingItem>>(dataObj.get("datas"),
-                    GsonUtils.getListType(SamplePagingItem::class.java))
-            }.onSuccess {
-                curPage++
             }
-
-            val isPagingFinished = result.getOrNull().let {
-                it.isNullOrEmpty() || curPage > 3
-            }
-
+            val isPagingFinished = result.isSuccess && result.getOrThrow().isEmpty()
             callback.onResult(isPagingFinished, rawData, result)
         }
     }
