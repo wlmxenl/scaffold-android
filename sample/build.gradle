@@ -50,7 +50,7 @@ dependencies {
     implementation "com.google.android.material:material:${versions.material}"
 
     implementation 'com.blankj:utilcode:1.30.6'
-    implementation 'com.github.wlmxenl:ScreenAdaptation:1.0.1@aar'
+    implementation 'com.github.wlmxenl:ScreenAdaptation:1.1'
     implementation 'com.gitee.zackratos:UltimateBarX:0.8.0'
 
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.7'
@@ -65,6 +65,8 @@ dependencies {
 
     implementation 'io.github.scwang90:refresh-layout-kernel:2.0.5'
     implementation 'io.github.scwang90:refresh-header-classics:2.0.5'
+
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.1.0'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

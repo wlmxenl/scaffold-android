@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import cn.dripcloud.scaffold.page.BasePageActivity
 import cn.dripcloud.scaffold.page.IPageStateView
-import cn.dripcloud.scaffold.sample.util.ViewBindingUtil
+import com.dylanc.viewbinding.base.ViewBindingUtil
 import com.zackratos.ultimatebarx.ultimatebarx.statusBarOnly
 
 /**

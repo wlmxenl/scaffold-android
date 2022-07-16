@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import cn.dripcloud.scaffold.page.BasePageFragment
 import cn.dripcloud.scaffold.page.IPageStateView
-import cn.dripcloud.scaffold.sample.util.ViewBindingUtil
+import com.dylanc.viewbinding.base.ViewBindingUtil
 
 /**
  * 业务 BaseFragment 基类
