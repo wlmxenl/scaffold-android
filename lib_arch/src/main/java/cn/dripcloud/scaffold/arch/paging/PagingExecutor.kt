@@ -2,46 +2,40 @@ package cn.dripcloud.scaffold.arch.paging
 
 import androidx.recyclerview.widget.RecyclerView
 import cn.dripcloud.scaffold.page.IPageStateView
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnLoadMoreListener
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.drake.brv.BindingAdapter
+import com.drake.brv.PageRefreshLayout
+import com.drake.brv.utils.models
 import com.scwang.smart.refresh.layout.api.RefreshLayout
-import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
 /**
  *
  * @author wangzf
  * @date 2022/4/16
  */
-class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListener, OnLoadMoreListener {
+class PagingExecutor<T> private constructor(builder: Builder<T>) {
+    private val TAG = "PagingExecutor"
     private val pagingRequest: IPagingRequest<T> = builder.pagingRequest
     private val pagingCallback: IPagingCallback? = builder.pagingCallback
     private val pageStateView: IPageStateView? = builder.pageStateView
-    private val refreshLayout: RefreshLayout? = builder.refreshLayout
+    private val refreshLayout: PageRefreshLayout = builder.refreshLayout
     private val rvList: RecyclerView = builder.recyclerView
-    private val rvAdapter: BaseQuickAdapter<T, BaseViewHolder> = builder.adapter
     var mState = PagingState.ON_LOAD_FIRST_PAGE_DATA
         private set
-    var isRequesting = false // 防止数据填充不满一屏 并且 可以继续翻页时，会触发2次 onLoadMore
-        private set
-    var showLoadMoreEndView = builder.showLoadMoreEndView // 分页结束后是否显示没有更多数据
 
     init {
-        refreshLayout?.setOnRefreshListener(this)
-        rvAdapter.loadMoreModule.setOnLoadMoreListener(this)
-        rvList.adapter = rvAdapter
+        refreshLayout.onRefresh {
+            doRefresh(this)
+        }
+        refreshLayout.onLoadMore {
+            doLoadMore(this)
+        }
     }
 
     /**
      * 下拉刷新回调
      * @param refreshLayout
      */
-    override fun onRefresh(refreshLayout: RefreshLayout) {
-        // 加载更多时拦截下拉刷新操作
-        if (isRequesting) {
-            refreshLayout.finishRefresh()
-            return
-        }
+    private fun doRefresh(refreshLayout: RefreshLayout) {
         mState = PagingState.ON_LOAD_FIRST_PAGE_DATA
         loadData()
     }
@@ -49,20 +43,19 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
     /**
      * 加载更多回调
      */
-    override fun onLoadMore() {
-        if (isRequesting || mState == PagingState.ON_PAGING_FINISHED) {
+    private fun doLoadMore(refreshLayout: RefreshLayout) {
+        if (mState == PagingState.ON_PAGING_FINISHED) {
             return
         }
         mState = PagingState.ON_LOAD_NEXT_PAGE_DATA
         loadData()
     }
 
-    fun loadData() {
-        isRequesting = true
+    private fun loadData() {
         pagingCallback?.onLoadDataPrepared(mState)
 
         // 初次加载页面显示 Loading 状态
-        if (mState == PagingState.ON_LOAD_FIRST_PAGE_DATA && rvAdapter.data.isEmpty()) {
+        if (mState == PagingState.ON_LOAD_FIRST_PAGE_DATA && rvList.models.isNullOrEmpty()) {
             pageStateView?.setPageState(IPageStateView.STATE_LOADING)
         }
         // 执行分页数据请求
@@ -75,7 +68,6 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
                 ) {
                     pagingCallback?.onLoadDataCompleted(rawData, mState)
                     fillData(result, pagingFinished)
-                    isRequesting = false
                 }
             })
         }
@@ -83,7 +75,7 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
 
     private fun fillData(result: Result<List<T>>, pagingFinished: Boolean) {
         // 结束下拉刷新动画
-        if (mState == PagingState.ON_LOAD_FIRST_PAGE_DATA && refreshLayout?.isRefreshing == true) {
+        if (mState == PagingState.ON_LOAD_FIRST_PAGE_DATA && refreshLayout.isRefreshing) {
             refreshLayout.finishRefresh()
         }
         // 请求数据失败
@@ -98,21 +90,10 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
     private fun onLoadDataSucceeded(result: Result<List<T>>, pagingFinished: Boolean) {
         // 填充列表数据
         val dataList = result.getOrElse { emptyList() }
-        if (mState == PagingState.ON_LOAD_FIRST_PAGE_DATA) {
-            rvAdapter.setNewInstance(dataList.toMutableList())
-        } else {
-            rvAdapter.addData(dataList)
-        }
-
-        // 修改 LoadMoreView 样式
-        rvList.post {
-            rvAdapter.loadMoreModule.let {
-                if (pagingFinished) it.loadMoreEnd(!showLoadMoreEndView) else it.loadMoreComplete()
-            }
-        }
+        refreshLayout.addData(dataList) { !pagingFinished }
 
         // 设置页面状态
-        val newPageSate = if (rvAdapter.data.isEmpty()) IPageStateView.STATE_EMPTY else IPageStateView.STATE_CONTENT
+        val newPageSate = if (rvList.models.isNullOrEmpty()) IPageStateView.STATE_EMPTY else IPageStateView.STATE_CONTENT
         if (pageStateView?.getPageState() != newPageSate) {
             pageStateView?.setPageState(newPageSate)
         }
@@ -125,12 +106,20 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
     }
 
     private fun onLoadDataFailed() {
-        if (mState == PagingState.ON_LOAD_FIRST_PAGE_DATA || rvAdapter.data.isEmpty()) {
+        if (mState == PagingState.ON_LOAD_FIRST_PAGE_DATA || rvList.models.isNullOrEmpty()) {
             pageStateView?.setPageState(IPageStateView.STATE_ERROR)
         } else {
-            rvAdapter.loadMoreModule.loadMoreFail()
+            refreshLayout.finishLoadMore(0, success = false, noMoreData = false)
         }
         pagingCallback?.onFillDataCompleted(mState)
+    }
+
+
+    /**
+     * 加载第一页数据
+     */
+    fun loadFirstPageData() {
+        refreshLayout.refresh()
     }
 
     /**
@@ -140,23 +129,16 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
      * @param hasLoadMore
      */
     fun setData(dataList: MutableList<T>, hasLoadMore: Boolean) {
-        rvAdapter.setNewInstance(dataList)
-        rvAdapter.loadMoreModule.let {
-            if (hasLoadMore) {
-                it.loadMoreComplete()
-            } else {
-                it.loadMoreEnd()
-            }
-        }
+        refreshLayout.addData(dataList) { hasLoadMore }
     }
 
     class Builder<T> {
         internal lateinit var pagingRequest: IPagingRequest<T>
         internal var pagingCallback: IPagingCallback? = null
         internal var pageStateView: IPageStateView? = null
-        internal var refreshLayout: RefreshLayout? = null
+        internal lateinit var refreshLayout: PageRefreshLayout
         internal lateinit var recyclerView: RecyclerView
-        internal lateinit var adapter: BaseQuickAdapter<T, BaseViewHolder>
+        // internal lateinit var adapter: BindingAdapter
         internal var showLoadMoreEndView = true
 
         fun setPagingRequest(request: IPagingRequest<T>) = apply {
@@ -167,14 +149,14 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
             this.pagingCallback = callback
         }
 
-        fun bindView(refreshLayout: RefreshLayout?, recyclerView: RecyclerView, pageStateView: IPageStateView?) = apply {
+        fun bindView(refreshLayout: PageRefreshLayout, recyclerView: RecyclerView, pageStateView: IPageStateView?) = apply {
             this.recyclerView = recyclerView
             this.refreshLayout = refreshLayout
             this.pageStateView = pageStateView
         }
 
-        fun setAdapter(adapter: BaseQuickAdapter<T, BaseViewHolder>) = apply {
-            this.adapter = adapter
+        fun setAdapter(adapter: BindingAdapter) = apply {
+            // this.adapter = adapter
         }
 
         fun setShowLoadMoreEndView(boolean: Boolean) = apply {

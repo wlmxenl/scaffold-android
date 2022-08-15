@@ -16,6 +16,7 @@ import com.google.gson.JsonObject
  */
 class SamplePagingRequest(private val lifecycleOwner: LifecycleOwner) : IPagingRequest<Any> {
     private var curPage = 1
+    private var maxPage = 4
 
     override fun loadData(
         pagingState: PagingState,
@@ -44,7 +45,7 @@ class SamplePagingRequest(private val lifecycleOwner: LifecycleOwner) : IPagingR
                     curPage++
                 }
             }
-            val isPagingFinished = result.isSuccess && result.getOrThrow().isEmpty()
+            val isPagingFinished = result.isSuccess && curPage >= maxPage
             callback.onResult(isPagingFinished, rawData, result)
         }
     }

@@ -1,47 +1,37 @@
 package cn.dripcloud.scaffold.sample.module.paging_test
 
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
-import cn.dripcloud.scaffold.arch.paging.BaseBinderLoadMoreAdapter
+import cn.dripcloud.scaffold.arch.databinding.LibArchPagingBinding
 import cn.dripcloud.scaffold.arch.paging.PagingExecutor
 import cn.dripcloud.scaffold.sample.R
 import cn.dripcloud.scaffold.sample.base.SampleBaseFragment
-import cn.dripcloud.scaffold.sample.databinding.PagingFragmentBinding
-import com.blankj.utilcode.util.SizeUtils
-import me.jingbin.library.decoration.SpacesItemDecoration
+import com.drake.brv.utils.linear
+import com.drake.brv.utils.setup
 
 /**
  *
  * @author wangzf
  * @date 2022/4/16
  */
-class SamplePagingFragment : SampleBaseFragment<PagingFragmentBinding>() {
+class SamplePagingFragment : SampleBaseFragment<LibArchPagingBinding>() {
     private lateinit var pagingExecutor: PagingExecutor<Any>
-    private val adapter by lazy {
-        BaseBinderLoadMoreAdapter().apply {
-            addItemBinder(SamplePagingItemBinder())
-        }
-    }
 
     override fun onPageViewCreated(savedInstanceState: Bundle?) {
         appBarView?.setTitle("分页测试")
 
-        binding.rvList.run {
-            layoutManager = LinearLayoutManager(requireActivity())
-            addItemDecoration(SpacesItemDecoration(requireActivity()).apply {
-                setParam(R.color.rv_divider_color, SizeUtils.dp2px(0.6f), 15f, 15f)
-            })
+        val adapter = binding.rv.linear().setup {
+            addType<SamplePagingItem>(R.layout.paging_recycle_item)
         }
 
         pagingExecutor = PagingExecutor.Builder<Any>()
             .setAdapter(adapter)
-            .bindView(binding.refreshLayout, binding.rvList, pageStateView)
+            .bindView(binding.refreshLayout, binding.rv, pageStateView)
             .setPagingRequest(SamplePagingRequest(viewLifecycleOwner))
             .setShowLoadMoreEndView(false)
             .build()
     }
 
     override fun onEnterAnimationEnd() {
-        pagingExecutor.loadData()
+        pagingExecutor.loadFirstPageData()
     }
 }
