@@ -11,7 +11,7 @@ abstract class BasePageActivity<VB : ViewBinding, AppBarView : View> : AppCompat
     protected lateinit var activity: Activity
     protected lateinit var binding: VB
     protected var appBarView: AppBarView? = null
-    protected var pageStateView: IPageStateView? = null
+    protected var pageStateView: IPageStateLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +24,7 @@ abstract class BasePageActivity<VB : ViewBinding, AppBarView : View> : AppCompat
                 loadData()
             }
         }
-        val pageDelegate = PageDelegate(activity, binding.root, appBarView, pageStateView)
+        val pageDelegate = PageLayoutDelegate(activity, binding.root, appBarView, pageStateView as? IContentLayoutWrapper)
         setContentView(pageDelegate.rootView)
         onAfterSetContentView()
         onPageViewCreated(savedInstanceState)

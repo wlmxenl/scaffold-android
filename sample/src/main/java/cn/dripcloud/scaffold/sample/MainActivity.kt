@@ -5,7 +5,7 @@ import android.view.MenuItem
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import cn.dripcloud.scaffold.page.IPageStateView
+import cn.dripcloud.scaffold.page.IPageStateLayout
 import cn.dripcloud.scaffold.sample.base.SampleAppBarView
 import cn.dripcloud.scaffold.sample.base.SampleBaseActivity
 import cn.dripcloud.scaffold.sample.databinding.ActivityMainBinding
@@ -38,6 +38,6 @@ class MainActivity : SampleBaseActivity<ActivityMainBinding>() {
 
     // 首页不需要展示顶部应用栏和多状态布局
     override fun onCreateAppBarView(): SampleAppBarView? = null
-    override fun onCreatePageStateView(): IPageStateView? = null
+    override fun onCreatePageStateView(): IPageStateLayout? = null
 
 }

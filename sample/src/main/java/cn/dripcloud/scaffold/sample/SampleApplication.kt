@@ -5,6 +5,7 @@ import com.blankj.utilcode.util.Utils
 import com.drake.brv.utils.BRV
 import com.drake.net.NetConfig
 import com.drake.net.interceptor.LogRecordInterceptor
+import com.drake.statelayout.StateConfig
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.MaterialHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -31,6 +32,10 @@ class SampleApplication : Application() {
 
         SmartRefreshLayout.setDefaultRefreshFooterCreator { context, _ ->
             ClassicsFooter(context)
+        }
+
+        StateConfig.apply {
+            loadingLayout = R.layout.page_state_loading
         }
     }
 }

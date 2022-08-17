@@ -8,7 +8,7 @@ import androidx.navigation.fragment.NavHostFragment
 import cn.dripcloud.scaffold.arch.R
 import cn.dripcloud.scaffold.arch.databinding.LibArchNavigationContainerBinding
 import cn.dripcloud.scaffold.page.BasePageActivity
-import cn.dripcloud.scaffold.page.IPageStateView
+import cn.dripcloud.scaffold.page.IPageStateLayout
 
 /**
  * SimpleNavHostActivity
@@ -44,5 +44,5 @@ abstract class SimpleNavHostActivity : BasePageActivity<LibArchNavigationContain
     open fun getStartDestinationArgs(): Bundle? = null
 
     override fun onCreateAppBarView(): View? = null
-    override fun onCreatePageStateView(): IPageStateView? = null
+    override fun onCreatePageStateView(): IPageStateLayout? = null
 }

@@ -15,7 +15,7 @@ abstract class BasePageFragment<VB : ViewBinding, AppBarView : View> : Fragment(
     private var _binding: VB? = null
     protected val binding get() = _binding!!
     protected var appBarView: AppBarView? = null
-    protected var pageStateView: IPageStateView? = null
+    protected var pageStateView: IPageStateLayout? = null
     private var mTmpSavedFragmentState: Bundle? = null
     private var mIsEnterAnimationEnd = true
     protected var isLazyInitCompleted = false
@@ -32,7 +32,7 @@ abstract class BasePageFragment<VB : ViewBinding, AppBarView : View> : Fragment(
             }
         }
         appBarView = onCreateAppBarView() as? AppBarView
-        val pageDelegate = PageDelegate(requireActivity(), binding.root, appBarView, pageStateView)
+        val pageDelegate = PageLayoutDelegate(requireActivity(), binding.root, appBarView, pageStateView as? IContentLayoutWrapper)
         return pageDelegate.rootView
     }
 

@@ -12,7 +12,7 @@ interface IBasePage<VB : ViewBinding> {
 
     fun onCreateAppBarView(): View?
 
-    fun onCreatePageStateView(): IPageStateView?
+    fun onCreatePageStateView(): IPageStateLayout?
 
     fun onPageViewCreated(savedInstanceState: Bundle?)
 

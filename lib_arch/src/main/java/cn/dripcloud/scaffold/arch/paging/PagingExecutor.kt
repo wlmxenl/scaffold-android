@@ -1,7 +1,7 @@
 package cn.dripcloud.scaffold.arch.paging
 
 import androidx.recyclerview.widget.RecyclerView
-import cn.dripcloud.scaffold.page.IPageStateView
+import cn.dripcloud.scaffold.page.IPageStateLayout
 import com.drake.brv.BindingAdapter
 import com.drake.brv.PageRefreshLayout
 import com.drake.brv.utils.models
@@ -16,7 +16,7 @@ class PagingExecutor<T> private constructor(builder: Builder<T>) {
     private val TAG = "PagingExecutor"
     private val pagingRequest: IPagingRequest<T> = builder.pagingRequest
     private val pagingCallback: IPagingCallback? = builder.pagingCallback
-    private val pageStateView: IPageStateView? = builder.pageStateView
+    private val pageStateView: IPageStateLayout? = builder.pageStateView
     private val refreshLayout: PageRefreshLayout = builder.refreshLayout
     private val rvList: RecyclerView = builder.recyclerView
     var mState = PagingState.ON_LOAD_FIRST_PAGE_DATA
@@ -56,7 +56,7 @@ class PagingExecutor<T> private constructor(builder: Builder<T>) {
 
         // 初次加载页面显示 Loading 状态
         if (mState == PagingState.ON_LOAD_FIRST_PAGE_DATA && rvList.models.isNullOrEmpty()) {
-            pageStateView?.setPageState(IPageStateView.STATE_LOADING)
+            pageStateView?.setPageState(IPageStateLayout.STATE_LOADING)
         }
         // 执行分页数据请求
         rvList.post {
@@ -93,7 +93,7 @@ class PagingExecutor<T> private constructor(builder: Builder<T>) {
         refreshLayout.addData(dataList) { !pagingFinished }
 
         // 设置页面状态
-        val newPageSate = if (rvList.models.isNullOrEmpty()) IPageStateView.STATE_EMPTY else IPageStateView.STATE_CONTENT
+        val newPageSate = if (rvList.models.isNullOrEmpty()) IPageStateLayout.STATE_EMPTY else IPageStateLayout.STATE_CONTENT
         if (pageStateView?.getPageState() != newPageSate) {
             pageStateView?.setPageState(newPageSate)
         }
@@ -107,7 +107,7 @@ class PagingExecutor<T> private constructor(builder: Builder<T>) {
 
     private fun onLoadDataFailed() {
         if (mState == PagingState.ON_LOAD_FIRST_PAGE_DATA || rvList.models.isNullOrEmpty()) {
-            pageStateView?.setPageState(IPageStateView.STATE_ERROR)
+            pageStateView?.setPageState(IPageStateLayout.STATE_ERROR)
         } else {
             refreshLayout.finishLoadMore(0, success = false, noMoreData = false)
         }
@@ -135,7 +135,7 @@ class PagingExecutor<T> private constructor(builder: Builder<T>) {
     class Builder<T> {
         internal lateinit var pagingRequest: IPagingRequest<T>
         internal var pagingCallback: IPagingCallback? = null
-        internal var pageStateView: IPageStateView? = null
+        internal var pageStateView: IPageStateLayout? = null
         internal lateinit var refreshLayout: PageRefreshLayout
         internal lateinit var recyclerView: RecyclerView
         // internal lateinit var adapter: BindingAdapter
@@ -149,7 +149,7 @@ class PagingExecutor<T> private constructor(builder: Builder<T>) {
             this.pagingCallback = callback
         }
 
-        fun bindView(refreshLayout: PageRefreshLayout, recyclerView: RecyclerView, pageStateView: IPageStateView?) = apply {
+        fun bindView(refreshLayout: PageRefreshLayout, recyclerView: RecyclerView, pageStateView: IPageStateLayout?) = apply {
             this.recyclerView = recyclerView
             this.refreshLayout = refreshLayout
             this.pageStateView = pageStateView

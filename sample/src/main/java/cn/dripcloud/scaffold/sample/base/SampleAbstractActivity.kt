@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import cn.dripcloud.scaffold.page.BasePageActivity
-import cn.dripcloud.scaffold.page.IPageStateView
+import cn.dripcloud.scaffold.page.IPageStateLayout
 import com.dylanc.viewbinding.base.ViewBindingUtil
 import com.zackratos.ultimatebarx.ultimatebarx.statusBarOnly
 
@@ -30,8 +30,8 @@ abstract class SampleAbstractActivity<VB : ViewBinding, AppBarView : View> : Bas
         return ViewBindingUtil.inflateWithGeneric(this, inflater)
     }
 
-    override fun onCreatePageStateView(): IPageStateView? {
-        return SamplePageStateView(this)
+    override fun onCreatePageStateView(): IPageStateLayout? {
+        return PageStateLayoutWrapper()
     }
 
     @SuppressLint("SourceLockedOrientationActivity")

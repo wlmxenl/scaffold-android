@@ -3,7 +3,7 @@ package cn.dripcloud.scaffold.page
 import android.view.View
 import android.view.ViewGroup
 
-interface IPageStateView {
+interface IPageStateLayout {
 
     companion object {
         const val STATE_LOADING = 1
@@ -12,8 +12,6 @@ interface IPageStateView {
         const val STATE_CONTENT = 4
         const val STATE_CUSTOM = 5
     }
-
-    fun getContentView(): View
 
     fun setPageState(state: Int)
 
@@ -28,5 +26,4 @@ interface IPageStateView {
     interface OnStateChangeListener {
         fun onStateChanged(state: Int)
     }
-
 }
