@@ -58,19 +58,18 @@ class PagingExecutor<T> private constructor(builder: Builder<T>) {
         if (mState == PagingState.ON_LOAD_FIRST_PAGE_DATA && rvList.models.isNullOrEmpty()) {
             pageStateView?.setPageState(IPageStateLayout.STATE_LOADING)
         }
+
         // 执行分页数据请求
-        rvList.post {
-            pagingRequest.loadData(mState, object : IPagingRequest.Callback<T> {
-                override fun onResult(
-                    pagingFinished: Boolean,
-                    rawData: Any,
-                    result: Result<List<T>>
-                ) {
-                    pagingCallback?.onLoadDataCompleted(rawData, mState)
-                    fillData(result, pagingFinished)
-                }
-            })
-        }
+        pagingRequest.loadData(mState, object : IPagingRequest.Callback<T> {
+            override fun onResult(
+                pagingFinished: Boolean,
+                rawData: Any,
+                result: Result<List<T>>
+            ) {
+                pagingCallback?.onLoadDataCompleted(rawData, mState)
+                fillData(result, pagingFinished)
+            }
+        })
     }
 
     private fun fillData(result: Result<List<T>>, pagingFinished: Boolean) {
@@ -78,11 +77,13 @@ class PagingExecutor<T> private constructor(builder: Builder<T>) {
         if (mState == PagingState.ON_LOAD_FIRST_PAGE_DATA && refreshLayout.isRefreshing) {
             refreshLayout.finishRefresh()
         }
+
         // 请求数据失败
         if (result.isFailure) {
             onLoadDataFailed()
             return
         }
+
         // 请求数据成功
         onLoadDataSucceeded(result, pagingFinished)
     }
