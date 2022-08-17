@@ -1,4 +1,4 @@
-package cn.dripcloud.scaffold.sample.module.paging_test
+package cn.dripcloud.scaffold.sample.module.paging
 
 import androidx.lifecycle.LifecycleOwner
 import cn.dripcloud.scaffold.arch.paging.IPagingRequest

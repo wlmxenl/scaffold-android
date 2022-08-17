@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/paging_fragment"
-        android:name="cn.dripcloud.scaffold.sample.module.paging_test.SamplePagingFragment"
+        android:name="cn.dripcloud.scaffold.sample.module.paging.SamplePagingFragment"
         tools:layout="@layout/paging_fragment" />
 
 </navigation>

@@ -1,4 +1,4 @@
-package cn.dripcloud.scaffold.sample.module.paging_test
+package cn.dripcloud.scaffold.sample.module.paging
 
 import android.os.Bundle
 import cn.dripcloud.scaffold.arch.databinding.LibArchPagingBinding

@@ -1,4 +1,4 @@
-//package cn.dripcloud.scaffold.sample.module.paging_test
+package cn.dripcloud.scaffold.sample.module.paging//package cn.dripcloud.scaffold.sample.module.paging_test
 //
 //import android.view.LayoutInflater
 //import android.view.ViewGroup

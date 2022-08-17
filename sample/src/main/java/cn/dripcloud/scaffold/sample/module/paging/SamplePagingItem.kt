@@ -1,4 +1,4 @@
-package cn.dripcloud.scaffold.sample.module.paging_test
+package cn.dripcloud.scaffold.sample.module.paging
 
 
 import androidx.annotation.Keep

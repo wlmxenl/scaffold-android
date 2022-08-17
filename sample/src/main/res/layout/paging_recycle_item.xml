@@ -6,7 +6,7 @@
 
         <variable
             name="m"
-            type="cn.dripcloud.scaffold.sample.module.paging_test.SamplePagingItem" />
+            type="cn.dripcloud.scaffold.sample.module.paging.SamplePagingItem" />
 
     </data>
 
