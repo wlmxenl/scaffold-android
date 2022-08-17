@@ -23,6 +23,6 @@
     <fragment
         android:id="@+id/paging_fragment"
         android:name="cn.dripcloud.scaffold.sample.module.paging.SamplePagingFragment"
-        tools:layout="@layout/paging_fragment" />
+        tools:layout="@layout/lib_arch_paging" />
 
 </navigation>

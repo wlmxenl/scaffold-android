@@ -36,6 +36,8 @@ class SampleApplication : Application() {
 
         StateConfig.apply {
             loadingLayout = R.layout.page_state_loading
+            emptyLayout = R.layout.page_state_empty
+            errorLayout = R.layout.page_state_error
         }
     }
 }
