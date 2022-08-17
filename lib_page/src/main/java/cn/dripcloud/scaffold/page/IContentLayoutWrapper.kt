@@ -14,6 +14,7 @@ interface IContentLayoutWrapper : IPageStateLayout {
      * 包裹内容布局
      * @param pageRootLayout 业务页面布局上级布局
      * @param pageContentLayout 业务页面布局
+     * @param appBarViewId 顶部导航栏 id
      */
     fun wrap(pageRootLayout: ConstraintLayout, pageContentLayout: View, appBarViewId: Int)
 }
