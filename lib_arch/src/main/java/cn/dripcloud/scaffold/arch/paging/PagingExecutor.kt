@@ -1,50 +1,65 @@
 package cn.dripcloud.scaffold.arch.paging
 
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
+import cn.dripcloud.scaffold.arch.paging.loadState.LoadState
+import cn.dripcloud.scaffold.arch.paging.loadState.trailing.DefaultTrailingLoadStateAdapter
+import cn.dripcloud.scaffold.arch.paging.loadState.trailing.TrailingLoadStateAdapter
 import cn.dripcloud.scaffold.page.IPageStateLayout
-import com.drake.brv.BindingAdapter
-import com.drake.brv.PageRefreshLayout
-import com.drake.brv.utils.models
+import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
 /**
  *
  * @author wangzf
  * @date 2022/4/16
  */
-class PagingExecutor<T> private constructor(builder: Builder<T>) {
-    private val TAG = "PagingExecutor"
+class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListener {
     private val pagingRequest: IPagingRequest<T> = builder.pagingRequest
     private val pagingCallback: IPagingCallback? = builder.pagingCallback
     private val pageStateView: IPageStateLayout? = builder.pageStateView
-    private val refreshLayout: PageRefreshLayout = builder.refreshLayout
+    private val refreshLayout: SmartRefreshLayout? = builder.refreshLayout
     private val rvList: RecyclerView = builder.recyclerView
+    private val helper: QuickAdapterHelper
+    private var isRequesting = false
     var mState = PagingState.ON_LOAD_FIRST_PAGE_DATA
         private set
 
     init {
-        refreshLayout.onRefresh {
-            doRefresh(this)
-        }
-        refreshLayout.onLoadMore {
-            doLoadMore(this)
-        }
+        refreshLayout?.setOnRefreshListener(this)
+
+        helper = QuickAdapterHelper.Builder(builder.adapter)
+            .setTrailingLoadStateAdapter(builder.trailingLoadStateAdapter)
+            .build()
+        helper.trailingLoadStateAdapter!!
+            .setOnLoadMoreListener(object : TrailingLoadStateAdapter.OnTrailingListener {
+                override fun onLoad() {
+                    rvList.post {
+                        doLoadMore()
+                    }
+                }
+
+                override fun onFailRetry() {
+                    doLoadMore()
+                }
+
+                override fun isAllowLoading(): Boolean {
+                    return mState != PagingState.ON_PAGING_FINISHED
+                }
+            })
+        rvList.adapter = helper.adapter
     }
 
-    /**
-     * 下拉刷新回调
-     * @param refreshLayout
-     */
-    private fun doRefresh(refreshLayout: RefreshLayout) {
-        mState = PagingState.ON_LOAD_FIRST_PAGE_DATA
-        loadData()
+    override fun onRefresh(refreshLayout: RefreshLayout) {
+        loadFirstPageData()
     }
 
     /**
      * 加载更多回调
      */
-    private fun doLoadMore(refreshLayout: RefreshLayout) {
-        if (mState == PagingState.ON_PAGING_FINISHED) {
+    private fun doLoadMore() {
+        if (isRequesting || mState == PagingState.ON_PAGING_FINISHED) {
             return
         }
         mState = PagingState.ON_LOAD_NEXT_PAGE_DATA
@@ -52,10 +67,11 @@ class PagingExecutor<T> private constructor(builder: Builder<T>) {
     }
 
     private fun loadData() {
+        isRequesting = true
         pagingCallback?.onLoadDataPrepared(mState)
 
         // 初次加载页面显示 Loading 状态
-        if (mState == PagingState.ON_LOAD_FIRST_PAGE_DATA && rvList.models.isNullOrEmpty()) {
+        if (mState == PagingState.ON_LOAD_FIRST_PAGE_DATA && helper.contentAdapter.models.isNullOrEmpty()) {
             pageStateView?.setPageState(IPageStateLayout.STATE_LOADING)
         }
 
@@ -68,19 +84,22 @@ class PagingExecutor<T> private constructor(builder: Builder<T>) {
             ) {
                 pagingCallback?.onLoadDataCompleted(rawData, mState)
                 fillData(result, pagingFinished)
+                isRequesting = false
             }
         })
     }
 
     private fun fillData(result: Result<List<T>>, pagingFinished: Boolean) {
         // 结束下拉刷新动画
-        if (mState == PagingState.ON_LOAD_FIRST_PAGE_DATA && refreshLayout.isRefreshing) {
-            refreshLayout.finishRefresh()
+        refreshLayout?.let {
+            if (it.isRefreshing && mState == PagingState.ON_LOAD_FIRST_PAGE_DATA) {
+                it.finishRefresh()
+            }
         }
 
         // 请求数据失败
         if (result.isFailure) {
-            onLoadDataFailed()
+            onLoadDataFailed(result.exceptionOrNull()!!)
             return
         }
 
@@ -88,13 +107,40 @@ class PagingExecutor<T> private constructor(builder: Builder<T>) {
         onLoadDataSucceeded(result, pagingFinished)
     }
 
+    private fun setNewData(dataList: List<T>) {
+        val models = helper.contentAdapter.models
+        if (models == null) {
+            helper.contentAdapter.models = dataList
+        } else {
+            if (models is MutableList) {
+                val size = models.size
+                models.clear()
+                helper.contentAdapter.checkedPosition.clear()
+                if (dataList.isEmpty()) {
+                    helper.contentAdapter.notifyItemRangeRemoved(helper.contentAdapter.headerCount, size)
+                } else {
+                    helper.contentAdapter.addModels(dataList)
+                }
+            }
+        }
+    }
+
     private fun onLoadDataSucceeded(result: Result<List<T>>, pagingFinished: Boolean) {
         // 填充列表数据
         val dataList = result.getOrElse { emptyList() }
-        refreshLayout.addData(dataList) { !pagingFinished }
+
+        // see: [PageRefreshLayout.addData()]
+        if (mState == PagingState.ON_LOAD_FIRST_PAGE_DATA) {
+            setNewData(dataList)
+        } else {
+            helper.contentAdapter.addModels(dataList)
+        }
+
+        // 修改 LoadMoreView 样式
+        setTrailingLoadState(!pagingFinished)
 
         // 设置页面状态
-        val newPageSate = if (rvList.models.isNullOrEmpty()) IPageStateLayout.STATE_EMPTY else IPageStateLayout.STATE_CONTENT
+        val newPageSate = if (helper.contentAdapter.models.isNullOrEmpty()) IPageStateLayout.STATE_EMPTY else IPageStateLayout.STATE_CONTENT
         if (pageStateView?.getPageState() != newPageSate) {
             pageStateView?.setPageState(newPageSate)
         }
@@ -106,21 +152,22 @@ class PagingExecutor<T> private constructor(builder: Builder<T>) {
         pagingCallback?.onFillDataCompleted(mState)
     }
 
-    private fun onLoadDataFailed() {
-        if (mState == PagingState.ON_LOAD_FIRST_PAGE_DATA || rvList.models.isNullOrEmpty()) {
+    private fun onLoadDataFailed(error: Throwable) {
+        if (mState == PagingState.ON_LOAD_FIRST_PAGE_DATA || helper.contentAdapter.models.isNullOrEmpty()) {
             pageStateView?.setPageState(IPageStateLayout.STATE_ERROR)
         } else {
-            refreshLayout.finishLoadMore(0, success = false, noMoreData = false)
+            helper.trailingLoadState = LoadState.Error(error)
         }
         pagingCallback?.onFillDataCompleted(mState)
     }
-
 
     /**
      * 加载第一页数据
      */
     fun loadFirstPageData() {
-        refreshLayout.refresh()
+        mState = PagingState.ON_LOAD_FIRST_PAGE_DATA
+        helper.trailingLoadState = LoadState.None
+        loadData()
     }
 
     /**
@@ -130,17 +177,26 @@ class PagingExecutor<T> private constructor(builder: Builder<T>) {
      * @param hasLoadMore
      */
     fun setData(dataList: MutableList<T>, hasLoadMore: Boolean) {
-        refreshLayout.addData(dataList) { hasLoadMore }
+        setNewData(dataList)
+        setTrailingLoadState(hasLoadMore)
     }
+
+    private fun setTrailingLoadState(hasLoadMore: Boolean) {
+        // !hasLoadMore=false, 设置状态为未加载，并且还有分页数据
+        // !hasLoadMore=true, 设置状态为未加载，并且没有分页数据了
+        helper.trailingLoadState = LoadState.NotLoading(!hasLoadMore)
+    }
+
+    val pagingAdapterHelper = helper
 
     class Builder<T> {
         internal lateinit var pagingRequest: IPagingRequest<T>
         internal var pagingCallback: IPagingCallback? = null
         internal var pageStateView: IPageStateLayout? = null
-        internal lateinit var refreshLayout: PageRefreshLayout
+        internal var refreshLayout: SmartRefreshLayout? = null
         internal lateinit var recyclerView: RecyclerView
-        // internal lateinit var adapter: BindingAdapter
-        internal var showLoadMoreEndView = true
+        internal lateinit var adapter: PagingBindingAdapter
+        internal lateinit var trailingLoadStateAdapter: TrailingLoadStateAdapter<*>
 
         fun setPagingRequest(request: IPagingRequest<T>) = apply {
             this.pagingRequest = request
@@ -150,20 +206,25 @@ class PagingExecutor<T> private constructor(builder: Builder<T>) {
             this.pagingCallback = callback
         }
 
-        fun bindView(refreshLayout: PageRefreshLayout, recyclerView: RecyclerView, pageStateView: IPageStateLayout?) = apply {
-            this.recyclerView = recyclerView
+        fun bindView(refreshLayout: SmartRefreshLayout?, recyclerView: RecyclerView, pageStateView: IPageStateLayout?) = apply {
             this.refreshLayout = refreshLayout
+            this.recyclerView = recyclerView
             this.pageStateView = pageStateView
         }
 
-        fun setAdapter(adapter: BindingAdapter) = apply {
-            // this.adapter = adapter
+        fun setAdapter(adapter: PagingBindingAdapter) = apply {
+            this.adapter = adapter
         }
 
-        fun setShowLoadMoreEndView(boolean: Boolean) = apply {
-            this.showLoadMoreEndView = boolean
+        fun setCustomTrailingLoadStateAdapter(stateAdapter: TrailingLoadStateAdapter<*>) {
+            this.trailingLoadStateAdapter = stateAdapter
         }
 
-        fun build(): PagingExecutor<T> = PagingExecutor(this)
+        fun build(): PagingExecutor<T> {
+            if (!::trailingLoadStateAdapter.isInitialized) {
+                setCustomTrailingLoadStateAdapter(DefaultTrailingLoadStateAdapter())
+            }
+            return PagingExecutor(this)
+        }
     }
 }
