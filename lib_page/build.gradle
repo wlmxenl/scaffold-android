@@ -55,7 +55,7 @@ afterEvaluate {
             release(MavenPublication) {
                 from components.release
                 groupId = 'com.github.wlmxenl'
-                artifactId = 'scaffold-page'
+                artifactId = 'lib-page'
                 version = '1.0'
             }
         }

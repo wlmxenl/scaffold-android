@@ -1,4 +1,4 @@
-rootProject.name = "AndroidScaffold"
+rootProject.name = "scaffold-android"
 include ':sample'
 include ':lib_page'
 include ':lib_arch'
