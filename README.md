@@ -1,6 +1,6 @@
 # AndroidScaffold
 
-[![](https://jitpack.io/v/wlmxenl/AndroidScaffold.svg)](https://jitpack.io/#wlmxenl/AndroidScaffold)
+[![](https://jitpack.io/v/wlmxenl/scaffold-android.svg)](https://jitpack.io/#wlmxenl/scaffold-android)
 
 **Step 1.** Add the JitPack repository to your build file
 </br>
@@ -17,6 +17,6 @@ allprojects {
 
 **Step 2.** Add the dependency  
 ```gradle
-implementation 'com.github.wlmxenl.AndroidScaffold:scaffold-page:1.1'
-implementation 'com.github.wlmxenl.AndroidScaffold:scaffold-arch:1.1'
+implementation 'com.github.wlmxenl.scaffold-android:lib-page:955b39c467'
+implementation 'com.github.wlmxenl.scaffold-android:lib-arch:955b39c467'
 ```
