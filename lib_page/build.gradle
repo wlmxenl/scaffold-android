@@ -12,7 +12,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-
+        resourcePrefix 'scaffold_'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -39,9 +39,12 @@ android {
 }
 
 dependencies {
-    api "androidx.core:core-ktx:${versions.core_ktx}"
-    api "androidx.appcompat:appcompat:${versions.appcompat}"
-    api "androidx.constraintlayout:constraintlayout:${versions.constraintlayout}"
+    // https://androidx.tech/artifacts/core/core-ktx/
+    api "androidx.core:core-ktx:1.8.0"
+    // https://androidx.tech/artifacts/appcompat/appcompat/
+    api "androidx.appcompat:appcompat:1.4.2"
+    // https://androidx.tech/artifacts/constraintlayout/constraintlayout/
+    api "androidx.constraintlayout:constraintlayout:2.1.4"
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment
 import cn.dripcloud.scaffold.arch.R
-import cn.dripcloud.scaffold.arch.databinding.LibArchNavigationContainerBinding
+import cn.dripcloud.scaffold.arch.databinding.ScaffoldNavigationContainerBinding
 import cn.dripcloud.scaffold.page.BasePageActivity
 import cn.dripcloud.scaffold.page.IPageStateLayout
 
@@ -15,14 +15,14 @@ import cn.dripcloud.scaffold.page.IPageStateLayout
  * @author wangzf
  * @date 2022/3/11
  */
-abstract class SimpleNavHostActivity : BasePageActivity<LibArchNavigationContainerBinding, View>() {
+abstract class SimpleNavHostActivity : BasePageActivity<ScaffoldNavigationContainerBinding, View>() {
 
     override fun onCreateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
         attachToRoot: Boolean
-    ): LibArchNavigationContainerBinding {
-        return LibArchNavigationContainerBinding.inflate(inflater)
+    ): ScaffoldNavigationContainerBinding {
+        return ScaffoldNavigationContainerBinding.inflate(inflater)
     }
 
     override fun onPageViewCreated(savedInstanceState: Bundle?) {
@@ -30,7 +30,7 @@ abstract class SimpleNavHostActivity : BasePageActivity<LibArchNavigationContain
         navHostFragment.navController.apply {
             val navGraph = navInflater.inflate(getNavGraphResId()).apply {
                 if (getCustomStartDestination() != 0) {
-                    startDestination = getCustomStartDestination()
+                    setStartDestination(getCustomStartDestination())
                 }
             }
             setGraph(navGraph, getStartDestinationArgs())

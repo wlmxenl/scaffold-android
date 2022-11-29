@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="LibArchWindowTranslateAnimation">
-        <item name="android:activityOpenEnterAnimation">@anim/lib_arch_slide_in_right</item>
-        <item name="android:activityOpenExitAnimation">@anim/lib_arch_slide_out_left</item>
-        <item name="android:activityCloseEnterAnimation">@anim/lib_arch_slide_in_left</item>
-        <item name="android:activityCloseExitAnimation">@anim/lib_arch_slide_out_right</item>
+    <style name="ScaffoldWindowTranslateAnimation">
+        <item name="android:activityOpenEnterAnimation">@anim/scaffold_slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/scaffold_slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/scaffold_slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/scaffold_slide_out_right</item>
     </style>
 
 </resources>

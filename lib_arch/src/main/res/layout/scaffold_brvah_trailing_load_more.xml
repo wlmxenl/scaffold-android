@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
-            android:text="@string/lib_arch_brvah_loading"
+            android:text="@string/scaffold_brvah_loading"
             android:textColor="@android:color/black"
             android:textSize="14sp" />
     </LinearLayout>
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/lib_arch_brvah_load_failed" />
+            android:text="@string/scaffold_brvah_load_failed" />
 
     </FrameLayout>
 
@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/lib_arch_brvah_load_complete"
+            android:text="@string/scaffold_brvah_load_complete"
             android:textColor="@android:color/darker_gray" />
     </FrameLayout>
 
@@ -67,7 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/lib_arch_brvah_load_end"
+            android:text="@string/scaffold_brvah_load_end"
             android:textColor="@android:color/darker_gray" />
     </FrameLayout>
 </FrameLayout>

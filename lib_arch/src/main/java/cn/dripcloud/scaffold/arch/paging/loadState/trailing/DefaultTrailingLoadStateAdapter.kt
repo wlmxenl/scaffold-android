@@ -21,7 +21,7 @@ internal class DefaultTrailingLoadStateAdapter(isLoadEndDisplay: Boolean = true)
      */
     internal class TrailingLoadStateVH(
         parent: ViewGroup,
-        view: View = LayoutInflater.from(parent.context).inflate(R.layout.lib_arch_brvah_trailing_load_more, parent, false)
+        view: View = LayoutInflater.from(parent.context).inflate(R.layout.scaffold_brvah_trailing_load_more, parent, false)
     ) : RecyclerView.ViewHolder(view) {
         val loadCompleteView: View = itemView.findViewById(R.id.load_more_load_complete_view)
         val loadingView: View = itemView.findViewById(R.id.load_more_loading_view)
@@ -85,5 +85,5 @@ internal class DefaultTrailingLoadStateAdapter(isLoadEndDisplay: Boolean = true)
         }
     }
 
-    override fun getStateViewType(loadState: LoadState): Int = R.layout.lib_arch_brvah_trailing_load_more
+    override fun getStateViewType(loadState: LoadState): Int = R.layout.scaffold_brvah_trailing_load_more
 }

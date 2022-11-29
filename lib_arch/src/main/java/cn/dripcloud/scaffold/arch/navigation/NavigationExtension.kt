@@ -14,7 +14,7 @@ import cn.dripcloud.scaffold.arch.R
  * @date 2022/2/13
  */
 
-fun Fragment.navigate(@IdRes actionId: Int, bundle: Bundle? = null, navOptions: NavOptions? = null) {
+fun Fragment.scaffoldNavigate(@IdRes actionId: Int, bundle: Bundle? = null, navOptions: NavOptions? = null) {
     val navController = findNavController()
     var destNavOptions = navOptions
     // 从 navigation 配置读取
@@ -28,14 +28,14 @@ fun Fragment.navigate(@IdRes actionId: Int, bundle: Bundle? = null, navOptions: 
     val newNavOptions = destNavOptions.let {
         navOptions {
             anim {
-                enter = if (it.enterAnim == -1) R.anim.lib_arch_slide_in_right else it.enterAnim
-                exit = if (it.exitAnim == -1) R.anim.lib_arch_slide_out_left else it.exitAnim
-                popEnter = if (it.popEnterAnim == -1) R.anim.lib_arch_slide_in_left else it.popEnterAnim
-                popExit = if (it.popExitAnim == -1) R.anim.lib_arch_slide_out_right else it.popExitAnim
+                enter = if (it.enterAnim == -1) R.anim.scaffold_slide_in_right else it.enterAnim
+                exit = if (it.exitAnim == -1) R.anim.scaffold_slide_out_left else it.exitAnim
+                popEnter = if (it.popEnterAnim == -1) R.anim.scaffold_slide_in_left else it.popEnterAnim
+                popExit = if (it.popExitAnim == -1) R.anim.scaffold_slide_out_right else it.popExitAnim
             }
 
             // navigation 2.4.0 以上版本
-            /* if (it.popUpToRoute != null) {
+            if (it.popUpToRoute != null) {
                 popUpTo(it.popUpToRoute!!) {
                     inclusive = it.isPopUpToInclusive()
                     saveState = it.shouldPopUpToSaveState()
@@ -47,13 +47,7 @@ fun Fragment.navigate(@IdRes actionId: Int, bundle: Bundle? = null, navOptions: 
                 }
             }
             launchSingleTop = it.shouldLaunchSingleTop()
-            restoreState = it.shouldRestoreState() */
-
-            // navigation 2.3.5
-            launchSingleTop = it.shouldLaunchSingleTop()
-            popUpTo(it.popUpTo) {
-                inclusive = it.isPopUpToInclusive
-            }
+            restoreState = it.shouldRestoreState()
         }
     }
     navController.navigate(actionId, bundle, newNavOptions)

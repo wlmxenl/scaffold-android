@@ -23,7 +23,7 @@ internal class DefaultLeadingLoadStateAdapter :
     internal class LeadingLoadStateVH(
         parent: ViewGroup,
         view: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.lib_arch_brvah_leading_load_more, parent, false)
+            .inflate(R.layout.scaffold_brvah_leading_load_more, parent, false)
     ) : RecyclerView.ViewHolder(view) {
         val loadingProgress: View = itemView.findViewById(R.id.loading_progress)
     }
@@ -41,5 +41,5 @@ internal class DefaultLeadingLoadStateAdapter :
         }
     }
 
-    override fun getStateViewType(loadState: LoadState): Int = R.layout.lib_arch_brvah_leading_load_more
+    override fun getStateViewType(loadState: LoadState): Int = R.layout.scaffold_brvah_leading_load_more
 }

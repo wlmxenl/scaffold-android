@@ -1,7 +1,7 @@
 package cn.dripcloud.scaffold.sample.module.home
 
 import android.os.Bundle
-import cn.dripcloud.scaffold.arch.navigation.navigate
+import cn.dripcloud.scaffold.arch.navigation.scaffoldNavigate
 import cn.dripcloud.scaffold.sample.R
 import cn.dripcloud.scaffold.sample.base.SampleBaseFragment
 import cn.dripcloud.scaffold.sample.databinding.HomeFragmentLayoutBinding
@@ -20,7 +20,7 @@ class HomeFragment : SampleBaseFragment<HomeFragmentLayoutBinding>() {
         }
 
         binding.btnPaging.setOnClickListener {
-            navigate(R.id.paging_fragment)
+            scaffoldNavigate(R.id.paging_fragment)
         }
     }
 
