@@ -17,6 +17,6 @@ allprojects {
 
 **Step 2.** Add the dependency  
 ```gradle
-implementation 'com.github.wlmxenl.scaffold-android:scaffold-page:1.1
+implementation 'com.github.wlmxenl.scaffold-android:scaffold-page:1.1'
 implementation 'com.github.wlmxenl.scaffold-android:scaffold-arch:1.1'
 ```
