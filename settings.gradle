@@ -1,4 +1,20 @@
+pluginManagement {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/public'}
+        maven { url 'https://maven.aliyun.com/repository/google'}
+        gradlePluginPortal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/public'}
+        maven { url 'https://maven.aliyun.com/repository/google'}
+        maven { url 'https://jitpack.io' }
+    }
+}
+
 rootProject.name = "scaffold-android"
-include ':sample'
-include ':lib_page'
-include ':lib_arch'
+include ':app'
+include ':library'

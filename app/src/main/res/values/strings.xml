@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Sample</string>
+
+    <string name="home">首页</string>
+    <string name="mine">我的</string>
+
+    <string name="sample_paging">列表分页</string>
+    <string name="sample_state_layout">多状态布局</string>
+
+</resources>

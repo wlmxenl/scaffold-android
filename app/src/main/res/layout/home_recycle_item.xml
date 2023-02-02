@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="m"
+            type="kotlin.Pair&lt;Integer, Integer&gt;" />
+        <variable
+            name="context"
+            type="androidx.appcompat.app.AppCompatActivity" />
+    </data>
+
+    <TextView
+        android:id="@+id/tv_demo_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/appbar_background_color"
+        android:paddingHorizontal="@dimen/dp_14"
+        android:paddingVertical="@dimen/dp_6"
+        android:text="@{context.getString(m.first)}"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_15" />
+
+</layout>
