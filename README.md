@@ -17,6 +17,5 @@ allprojects {
 
 **Step 2.** Add the dependency  
 ```gradle
-implementation 'com.wlmxenl.scaffold-android:lib-page:955b39c467'
-implementation 'com.wlmxenl.scaffold-android:lib-arch:955b39c467'
+implementation 'com.github.wlmxenl:scaffold-android:2.0'
 ```
