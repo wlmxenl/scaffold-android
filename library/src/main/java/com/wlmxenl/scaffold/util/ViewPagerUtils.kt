@@ -1,6 +1,6 @@
-package com.wlmxenl.scaffold.utils
+package com.wlmxenl.scaffold.util
 
-object ViewPagerUtil {
+object ViewPagerUtils {
 
     fun setDefaultItemIndex(index: Int) {
         try {
