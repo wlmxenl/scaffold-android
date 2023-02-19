@@ -1,13 +1,17 @@
 package com.wlmxenl.scaffold.paging
 
+import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener
+import com.wlmxenl.scaffold.paging.loadState.FullSpanAdapterType
 import com.wlmxenl.scaffold.paging.loadState.LoadState
 import com.wlmxenl.scaffold.paging.loadState.trailing.DefaultTrailingLoadStateAdapter
 import com.wlmxenl.scaffold.paging.loadState.trailing.TrailingLoadStateAdapter
 import com.wlmxenl.scaffold.statelayout.IStateLayout
-import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import com.scwang.smart.refresh.layout.api.RefreshLayout
-import com.scwang.smart.refresh.layout.listener.OnRefreshListener
+import com.wlmxenl.scaffold.util.RecyclerViewUtils
 
 /**
  *
@@ -31,6 +35,7 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
         helper = QuickAdapterHelper.Builder(builder.adapter)
             .setTrailingLoadStateAdapter(builder.trailingLoadStateAdapter)
             .build()
+
         helper.trailingLoadStateAdapter!!
             .setOnLoadMoreListener(object : TrailingLoadStateAdapter.OnTrailingListener {
                 override fun onLoad() {
@@ -47,7 +52,23 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
                     return mState != PagingState.ON_PAGING_FINISHED
                 }
             })
-        rvList.adapter = helper.adapter
+
+        val concatAdapter = helper.adapter as ConcatAdapter
+        rvList.adapter = concatAdapter
+
+        // 处理 SpanSizeLookup
+        (rvList.layoutManager as? GridLayoutManager)?.run {
+            val oldSpanSizeLookup = spanSizeLookup
+            spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    if (position < 0) return 1
+                    return when(RecyclerViewUtils.getAdapterByItemPosition(concatAdapter, position)) {
+                        is FullSpanAdapterType -> spanCount
+                        else -> oldSpanSizeLookup?.getSpanSize(position) ?: 1
+                    }
+                }
+            }
+        }
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
