@@ -6,7 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.wlmxenl.scaffold.statelayout.IStateLayout
-import com.wlmxenl.scaffold.statelayout.StateLayoutDelegate
+import com.wlmxenl.scaffold.statelayout.StateLayoutProvider
 
 @Suppress("UNCHECKED_CAST")
 abstract class BaseScaffoldActivity<VB : ViewBinding, AppBarView : View> : AppCompatActivity(),
@@ -23,9 +23,9 @@ abstract class BaseScaffoldActivity<VB : ViewBinding, AppBarView : View> : AppCo
         binding = onCreateViewBinding(layoutInflater, null, false)
 
         appBarView = onCreateAppBarView() as? AppBarView
-        stateLayout = getStateLayoutDelegate()
+        stateLayout = getStateLayoutProvider()
         val contentView = ScaffoldUtil.convertContentView(this,
-            binding.root, appBarView, stateLayout as? StateLayoutDelegate)
+            binding.root, appBarView, stateLayout as? StateLayoutProvider)
         setContentView(contentView)
 
         onAfterSetContentView()

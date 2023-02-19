@@ -29,5 +29,5 @@ interface IStateLayout {
 }
 
 inline fun <reified V> IStateLayout.get() : V? {
-    return (this as? StateLayoutDelegate)?.getStateLayout() as? V
+    return (this as? StateLayoutProvider)?.getStateLayout() as? V
 }

@@ -10,7 +10,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.wlmxenl.scaffold.statelayout.IStateLayout
-import com.wlmxenl.scaffold.statelayout.StateLayoutDelegate
+import com.wlmxenl.scaffold.statelayout.StateLayoutProvider
 
 @Suppress("UNCHECKED_CAST")
 abstract class BaseScafflodFragment<VB : ViewBinding, AppBarView : View> : Fragment(),
@@ -30,10 +30,10 @@ abstract class BaseScafflodFragment<VB : ViewBinding, AppBarView : View> : Fragm
     ): View {
         _binding = onCreateViewBinding(inflater, container, false)
         appBarView = onCreateAppBarView() as? AppBarView
-        stateLayout = getStateLayoutDelegate()
+        stateLayout = getStateLayoutProvider()
         return com.wlmxenl.scaffold.base.ScaffoldUtil.convertContentView(
             requireActivity(), binding.root,
-            appBarView, stateLayout as? StateLayoutDelegate
+            appBarView, stateLayout as? StateLayoutProvider
         )
     }
 

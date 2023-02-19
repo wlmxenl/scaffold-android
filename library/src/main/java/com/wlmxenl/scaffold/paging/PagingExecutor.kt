@@ -194,7 +194,7 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
         internal var pageStateView: IStateLayout? = null
         internal var refreshLayout: SmartRefreshLayout? = null
         internal lateinit var recyclerView: RecyclerView
-        internal lateinit var adapter: PagingBindingAdapter
+        internal lateinit var adapter: ScaffoldPagingAdapter
         internal lateinit var trailingLoadStateAdapter: TrailingLoadStateAdapter<*>
 
         fun setPagingRequest(request: IPagingRequest<T>) = apply {
@@ -211,7 +211,7 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
             this.pageStateView = pageStateView
         }
 
-        fun setAdapter(adapter: PagingBindingAdapter) = apply {
+        fun setAdapter(adapter: ScaffoldPagingAdapter) = apply {
             this.adapter = adapter
         }
 

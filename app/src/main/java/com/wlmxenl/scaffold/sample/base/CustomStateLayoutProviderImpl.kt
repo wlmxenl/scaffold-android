@@ -6,9 +6,9 @@ import com.drake.statelayout.StateLayout
 import com.drake.statelayout.Status
 import com.wlmxenl.scafflod.sample.R
 import com.wlmxenl.scaffold.statelayout.IStateLayout
-import com.wlmxenl.scaffold.statelayout.StateLayoutDelegate
+import com.wlmxenl.scaffold.statelayout.StateLayoutProvider
 
-class CustomStateLayoutDelegateImpl : StateLayoutDelegate() {
+class CustomStateLayoutProviderImpl : StateLayoutProvider() {
     private var mStateLayout: StateLayout? = null
     private var mStateChangeListener: IStateLayout.OnStateChangeListener? = null
 

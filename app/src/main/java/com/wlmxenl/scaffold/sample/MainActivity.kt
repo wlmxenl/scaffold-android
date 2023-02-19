@@ -10,7 +10,7 @@ import com.wlmxenl.scaffold.sample.base.SampleBaseActivity
 import com.blankj.utilcode.util.LogUtils
 import com.wlmxenl.scafflod.sample.R
 import com.wlmxenl.scafflod.sample.databinding.ActivityMainBinding
-import com.wlmxenl.scaffold.statelayout.StateLayoutDelegate
+import com.wlmxenl.scaffold.statelayout.StateLayoutProvider
 
 class MainActivity : SampleBaseActivity<ActivityMainBinding>() {
 
@@ -39,6 +39,6 @@ class MainActivity : SampleBaseActivity<ActivityMainBinding>() {
 
     // 首页不需要展示顶部应用栏和多状态布局
     override fun onCreateAppBarView(): SampleAppBarView? = null
-    override fun getStateLayoutDelegate(): StateLayoutDelegate? = null
+    override fun getStateLayoutProvider(): StateLayoutProvider? = null
 
 }

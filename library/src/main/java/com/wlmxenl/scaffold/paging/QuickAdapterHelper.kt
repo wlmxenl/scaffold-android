@@ -3,15 +3,13 @@ package com.wlmxenl.scaffold.paging
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.wlmxenl.scaffold.paging.loadState.LoadState
-import com.wlmxenl.scaffold.paging.loadState.leading.DefaultLeadingLoadStateAdapter
 import com.wlmxenl.scaffold.paging.loadState.leading.LeadingLoadStateAdapter
-import com.wlmxenl.scaffold.paging.loadState.trailing.DefaultTrailingLoadStateAdapter
 import com.wlmxenl.scaffold.paging.loadState.trailing.TrailingLoadStateAdapter
 import com.drake.brv.BindingAdapter
 import com.drake.brv.item.ItemAttached
 
 class QuickAdapterHelper private constructor(
-    val contentAdapter: PagingBindingAdapter,
+    val contentAdapter: ScaffoldPagingAdapter,
 
     /**
      * Adapter for loading more at the head.
@@ -28,8 +26,8 @@ class QuickAdapterHelper private constructor(
     config: ConcatAdapter.Config
 ) {
 
-    private val mBeforeList = ArrayList<PagingBindingAdapter>(0)
-    private val mAfterList = ArrayList<PagingBindingAdapter>(0)
+    private val mBeforeList = ArrayList<ScaffoldPagingAdapter>(0)
+    private val mAfterList = ArrayList<ScaffoldPagingAdapter>(0)
 
     /**
      * The adapter which is finally attached to the RecyclerView.
@@ -110,7 +108,7 @@ class QuickAdapterHelper private constructor(
      *
      * @param adapter Adapter<*>
      */
-    fun addBeforeAdapter(adapter: PagingBindingAdapter) = apply {
+    fun addBeforeAdapter(adapter: ScaffoldPagingAdapter) = apply {
         addBeforeAdapter(mBeforeList.size, adapter)
     }
 
@@ -121,7 +119,7 @@ class QuickAdapterHelper private constructor(
      * @param index
      * @param adapter
      */
-    fun addBeforeAdapter(index: Int, adapter: PagingBindingAdapter) = apply {
+    fun addBeforeAdapter(index: Int, adapter: ScaffoldPagingAdapter) = apply {
         if (index < 0 || index > mBeforeList.size) throw IndexOutOfBoundsException("Index must be between 0 and ${mBeforeList.size}. Given:${index}")
 
         if (index == 0) {
@@ -165,7 +163,7 @@ class QuickAdapterHelper private constructor(
      *
      * @param adapter Adapter<*>
      */
-    fun addAfterAdapter(adapter: PagingBindingAdapter) = apply {
+    fun addAfterAdapter(adapter: ScaffoldPagingAdapter) = apply {
 
         lastAdapterOnViewAttachChangeListener?.let {
             if (mAfterList.isEmpty()) {
@@ -191,7 +189,7 @@ class QuickAdapterHelper private constructor(
      * @param index
      * @param adapter
      */
-    fun addAfterAdapter(index: Int, adapter: PagingBindingAdapter) = apply {
+    fun addAfterAdapter(index: Int, adapter: ScaffoldPagingAdapter) = apply {
         if (index < 0 || index > mAfterList.size) throw IndexOutOfBoundsException("Index must be between 0 and ${mAfterList.size}. Given:${index}")
 
         if (index == mAfterList.size) {
@@ -227,15 +225,15 @@ class QuickAdapterHelper private constructor(
      * Get Adapter List before [contentAdapter]
      * 获取 [contentAdapter] 之前的 AdapterList
      */
-    val beforeAdapterList: List<PagingBindingAdapter> get() = mBeforeList
+    val beforeAdapterList: List<ScaffoldPagingAdapter> get() = mBeforeList
 
     /**
      * Get Adapter List after [contentAdapter]
      * 获取 [contentAdapter] 之后的 AdapterList
      */
-    val afterAdapterList: List<PagingBindingAdapter> get() = mAfterList
+    val afterAdapterList: List<ScaffoldPagingAdapter> get() = mAfterList
 
-    fun removeAdapter(adapter: PagingBindingAdapter) = apply {
+    fun removeAdapter(adapter: ScaffoldPagingAdapter) = apply {
         if (adapter == contentAdapter) {
             return@apply
         }
@@ -269,7 +267,7 @@ class QuickAdapterHelper private constructor(
      * @property contentAdapter 主要内容的 Adapter
      * @constructor Create empty Builder
      */
-    class Builder(private val contentAdapter: PagingBindingAdapter) {
+    class Builder(private val contentAdapter: ScaffoldPagingAdapter) {
 
         private var leadingLoadStateAdapter: LeadingLoadStateAdapter<*>? = null
         private var trailingLoadStateAdapter: TrailingLoadStateAdapter<*>? = null

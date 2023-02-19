@@ -3,7 +3,7 @@ package com.wlmxenl.scaffold.paging
 import com.drake.brv.BindingAdapter
 import com.drake.brv.item.ItemAttached
 
-class PagingBindingAdapter : BindingAdapter() {
+open class ScaffoldPagingAdapter : BindingAdapter() {
     private var onViewAttachStateChangeListeners: MutableList<ItemAttached>? = null
 
     override fun onViewAttachedToWindow(holder: BindingViewHolder) {
@@ -24,9 +24,7 @@ class PagingBindingAdapter : BindingAdapter() {
         if (onViewAttachStateChangeListeners == null) {
             onViewAttachStateChangeListeners = ArrayList()
         }
-
         if (onViewAttachStateChangeListeners?.contains(listener) == true) return
-
         onViewAttachStateChangeListeners?.add(listener)
     }
 

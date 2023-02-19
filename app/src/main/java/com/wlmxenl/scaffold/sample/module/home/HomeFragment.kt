@@ -11,7 +11,7 @@ import com.wlmxenl.scafflod.sample.R
 import com.wlmxenl.scaffold.sample.base.SampleBaseFragment
 import com.wlmxenl.scafflod.sample.databinding.HomeFragmentLayoutBinding
 import com.wlmxenl.scafflod.sample.databinding.HomeRecycleItemBinding
-import com.wlmxenl.scaffold.statelayout.StateLayoutDelegate
+import com.wlmxenl.scaffold.statelayout.StateLayoutProvider
 import com.google.android.flexbox.FlexboxItemDecoration
 import com.google.android.flexbox.FlexboxLayoutManager
 
@@ -61,6 +61,6 @@ class HomeFragment : SampleBaseFragment<HomeFragmentLayoutBinding>() {
         }
     }
 
-    override fun getStateLayoutDelegate(): StateLayoutDelegate? = null
+    override fun getStateLayoutProvider(): StateLayoutProvider? = null
 
 }

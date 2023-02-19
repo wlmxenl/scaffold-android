@@ -2,7 +2,7 @@ package com.wlmxenl.scaffold.statelayout
 
 import android.view.View
 
-abstract class StateLayoutDelegate : IStateLayout {
+abstract class StateLayoutProvider : IStateLayout {
 
     abstract fun convertContentView(contentView: View): View
 

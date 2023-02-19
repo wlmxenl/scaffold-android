@@ -1,7 +1,7 @@
 package com.wlmxenl.scaffold.sample.features.paging
 
 import android.os.Bundle
-import com.wlmxenl.scaffold.paging.PagingBindingAdapter
+import com.wlmxenl.scaffold.paging.ScaffoldPagingAdapter
 import com.wlmxenl.scaffold.paging.PagingExecutor
 import com.drake.brv.utils.linear
 import com.wlmxenl.scafflod.sample.R
@@ -20,7 +20,7 @@ class SamplePagingFragment : SampleBaseFragment<PagingListLayoutBinding>() {
         appBarView?.setTitle(R.string.sample_paging)
 
         binding.rv.linear()
-        val contentAdapter = PagingBindingAdapter().apply {
+        val contentAdapter = ScaffoldPagingAdapter().apply {
             addType<SamplePagingItem>(R.layout.paging_recycle_item)
         }
 

@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.wlmxenl.scaffold.base.BaseScaffoldActivity
 import com.dylanc.viewbinding.base.ViewBindingUtil
-import com.wlmxenl.scaffold.statelayout.StateLayoutDelegate
+import com.wlmxenl.scaffold.statelayout.StateLayoutProvider
 import com.zackratos.ultimatebarx.ultimatebarx.statusBarOnly
 
 /**
@@ -28,8 +28,8 @@ abstract class SampleAbstractActivity<VB : ViewBinding, AppBarView : View> : Bas
         return ViewBindingUtil.inflateWithGeneric(this, inflater)
     }
 
-    override fun getStateLayoutDelegate(): StateLayoutDelegate? {
-        return CustomStateLayoutDelegateImpl()
+    override fun getStateLayoutProvider(): StateLayoutProvider? {
+        return CustomStateLayoutProviderImpl()
     }
 
     @SuppressLint("SourceLockedOrientationActivity")

@@ -8,7 +8,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.wlmxenl.scaffold.R
 import com.wlmxenl.scaffold.base.BaseScaffoldActivity
 import com.wlmxenl.scaffold.databinding.ScaffoldNavigationContainerBinding
-import com.wlmxenl.scaffold.statelayout.StateLayoutDelegate
+import com.wlmxenl.scaffold.statelayout.StateLayoutProvider
 
 /**
  * SimpleNavHostActivity
@@ -44,5 +44,5 @@ abstract class SimpleNavHostActivity : BaseScaffoldActivity<ScaffoldNavigationCo
     open fun getStartDestinationArgs(): Bundle? = null
 
     override fun onCreateAppBarView(): View? = null
-    override fun getStateLayoutDelegate(): StateLayoutDelegate? = null
+    override fun getStateLayoutProvider(): StateLayoutProvider? = null
 }
