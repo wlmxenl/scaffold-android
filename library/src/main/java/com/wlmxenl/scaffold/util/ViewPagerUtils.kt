@@ -1,13 +1,16 @@
 package com.wlmxenl.scaffold.util
 
+import androidx.viewpager.widget.ViewPager
+
 object ViewPagerUtils {
 
-    fun setDefaultItemIndex(index: Int) {
+    @JvmStatic
+    fun setDefaultItemIndex(viewPager: ViewPager, index: Int) {
         try {
             val clazz = Class.forName("androidx.viewpager.widget.ViewPager")
             val field = clazz.getDeclaredField("mCurItem")
             field.isAccessible = true
-            field.setInt(this, index)
+            field.setInt(viewPager, index)
         } catch (e: Exception) {
             e.printStackTrace()
         }
