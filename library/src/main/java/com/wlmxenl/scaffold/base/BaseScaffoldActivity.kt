@@ -19,7 +19,7 @@ abstract class BaseScaffoldActivity<VB : ViewBinding, AppBarView : View> : AppCo
         binding = onCreateViewBinding(layoutInflater, null, false)
         appBarView = onCreateAppBarView() as? AppBarView
         stateLayout = getStateLayoutProvider()
-        val contentView = ScaffoldUtil.convertContentView(
+        val contentView = ScaffoldUtils.convertContentView(
             this,
             binding.root, appBarView, stateLayout as? StateLayoutProvider
         )

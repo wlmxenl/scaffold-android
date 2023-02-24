@@ -11,7 +11,6 @@ import com.wlmxenl.scaffold.paging.loadState.LoadState
 import com.wlmxenl.scaffold.paging.loadState.trailing.DefaultTrailingLoadStateAdapter
 import com.wlmxenl.scaffold.paging.loadState.trailing.TrailingLoadStateAdapter
 import com.wlmxenl.scaffold.statelayout.IStateLayout
-import com.wlmxenl.scaffold.util.RecyclerViewUtils
 
 /**
  *
@@ -62,7 +61,7 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
             spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     if (position < 0) return 1
-                    return when(RecyclerViewUtils.getAdapterByItemPosition(concatAdapter, position)) {
+                    return when(PagingUtils.getAdapterByItemPosition(concatAdapter, position)) {
                         is FullSpanAdapterType -> spanCount
                         else -> oldSpanSizeLookup?.getSpanSize(position) ?: 1
                     }

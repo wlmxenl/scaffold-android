@@ -13,7 +13,7 @@ import com.wlmxenl.scaffold.statelayout.StateLayoutProvider
  * @author wangzf
  * @date 2022/8/20
  */
-internal object ScaffoldUtil {
+internal object ScaffoldUtils {
 
     fun convertContentView(
         context: Context,

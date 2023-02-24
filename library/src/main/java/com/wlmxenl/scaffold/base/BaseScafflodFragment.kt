@@ -31,7 +31,7 @@ abstract class BaseScafflodFragment<VB : ViewBinding, AppBarView : View> : Fragm
         _binding = onCreateViewBinding(inflater, container, false)
         appBarView = onCreateAppBarView() as? AppBarView
         stateLayout = getStateLayoutProvider()
-        return ScaffoldUtil.convertContentView(
+        return ScaffoldUtils.convertContentView(
             requireActivity(), binding.root,
             appBarView, stateLayout as? StateLayoutProvider
         )
