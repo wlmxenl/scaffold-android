@@ -1,6 +1,5 @@
 package com.wlmxenl.scaffold.base
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -9,26 +8,19 @@ import com.wlmxenl.scaffold.statelayout.IStateLayout
 import com.wlmxenl.scaffold.statelayout.StateLayoutProvider
 
 @Suppress("UNCHECKED_CAST")
-abstract class BaseScaffoldActivity<VB : ViewBinding, AppBarView : View> : AppCompatActivity(),
-    IBaseScaffold<VB> {
-    protected lateinit var activity: Activity
+abstract class BaseScaffoldActivity<VB : ViewBinding, AppBarView : View> : AppCompatActivity(), IBaseScaffold<VB> {
     protected lateinit var binding: VB
     protected var appBarView: AppBarView? = null
     protected var stateLayout: IStateLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity = this
-        onBeforeSetContentView()
         binding = onCreateViewBinding(layoutInflater, null, false)
-
         appBarView = onCreateAppBarView() as? AppBarView
         stateLayout = getStateLayoutProvider()
         val contentView = ScaffoldUtil.convertContentView(this,
             binding.root, appBarView, stateLayout as? StateLayoutProvider)
         setContentView(contentView)
-
-        onAfterSetContentView()
         onPageViewCreated(savedInstanceState)
         loadData()
     }
