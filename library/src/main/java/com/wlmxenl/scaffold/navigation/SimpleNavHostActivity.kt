@@ -16,7 +16,6 @@ import com.wlmxenl.scaffold.statelayout.StateLayoutProvider
  * @date 2022/3/11
  */
 abstract class SimpleNavHostActivity : BaseScaffoldActivity<ScaffoldNavigationContainerBinding, View>() {
-
     override fun onCreateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,9 +39,12 @@ abstract class SimpleNavHostActivity : BaseScaffoldActivity<ScaffoldNavigationCo
     override fun loadData() {}
 
     abstract fun getNavGraphResId(): Int
+
     open fun getCustomStartDestination() = 0
-    open fun getStartDestinationArgs(): Bundle? = null
+
+    open fun getStartDestinationArgs(): Bundle? = intent.extras
 
     override fun onCreateAppBarView(): View? = null
+
     override fun getStateLayoutProvider(): StateLayoutProvider? = null
 }
