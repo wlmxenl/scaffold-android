@@ -15,7 +15,8 @@ import com.wlmxenl.scaffold.statelayout.StateLayoutProvider
  * @author wangzf
  * @date 2022/3/11
  */
-abstract class SimpleNavHostActivity : BaseScaffoldActivity<ScaffoldNavigationContainerBinding, View>() {
+abstract class SimpleNavHostActivity :
+    BaseScaffoldActivity<ScaffoldNavigationContainerBinding, View>() {
     override fun onCreateViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,7 +26,8 @@ abstract class SimpleNavHostActivity : BaseScaffoldActivity<ScaffoldNavigationCo
     }
 
     override fun onPageViewCreated(savedInstanceState: Bundle?) {
-        val navHostFragment  = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navHostFragment.navController.apply {
             val navGraph = navInflater.inflate(getNavGraphResId()).apply {
                 if (getCustomStartDestination() != 0) {

@@ -14,7 +14,7 @@ import com.wlmxenl.scaffold.statelayout.StateLayoutProvider
 
 @Suppress("UNCHECKED_CAST")
 abstract class BaseScafflodFragment<VB : ViewBinding, AppBarView : View> : Fragment(),
-    com.wlmxenl.scaffold.base.IBaseScaffold<VB> {
+    IBaseScaffold<VB> {
     private var _binding: VB? = null
     protected val binding get() = _binding!!
     protected var appBarView: AppBarView? = null
@@ -31,7 +31,7 @@ abstract class BaseScafflodFragment<VB : ViewBinding, AppBarView : View> : Fragm
         _binding = onCreateViewBinding(inflater, container, false)
         appBarView = onCreateAppBarView() as? AppBarView
         stateLayout = getStateLayoutProvider()
-        return com.wlmxenl.scaffold.base.ScaffoldUtil.convertContentView(
+        return ScaffoldUtil.convertContentView(
             requireActivity(), binding.root,
             appBarView, stateLayout as? StateLayoutProvider
         )
@@ -40,7 +40,10 @@ abstract class BaseScafflodFragment<VB : ViewBinding, AppBarView : View> : Fragm
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // 自定义返回导航
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, mOnBackPressedCallback)
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            mOnBackPressedCallback
+        )
     }
 
     override fun onResume() {

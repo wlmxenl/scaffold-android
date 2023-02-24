@@ -8,7 +8,8 @@ import com.wlmxenl.scaffold.statelayout.IStateLayout
 import com.wlmxenl.scaffold.statelayout.StateLayoutProvider
 
 @Suppress("UNCHECKED_CAST")
-abstract class BaseScaffoldActivity<VB : ViewBinding, AppBarView : View> : AppCompatActivity(), IBaseScaffold<VB> {
+abstract class BaseScaffoldActivity<VB : ViewBinding, AppBarView : View> : AppCompatActivity(),
+    IBaseScaffold<VB> {
     protected lateinit var binding: VB
     protected var appBarView: AppBarView? = null
     protected var stateLayout: IStateLayout? = null
@@ -18,8 +19,10 @@ abstract class BaseScaffoldActivity<VB : ViewBinding, AppBarView : View> : AppCo
         binding = onCreateViewBinding(layoutInflater, null, false)
         appBarView = onCreateAppBarView() as? AppBarView
         stateLayout = getStateLayoutProvider()
-        val contentView = ScaffoldUtil.convertContentView(this,
-            binding.root, appBarView, stateLayout as? StateLayoutProvider)
+        val contentView = ScaffoldUtil.convertContentView(
+            this,
+            binding.root, appBarView, stateLayout as? StateLayoutProvider
+        )
         setContentView(contentView)
         onPageViewCreated(savedInstanceState)
         loadData()
