@@ -27,14 +27,4 @@ abstract class BaseScaffoldActivity<VB : ViewBinding, AppBarView : View> : AppCo
         onPageViewCreated(savedInstanceState)
         loadData()
     }
-
-    /**
-     * 在 setContentView() 之前执行
-     */
-    open fun onBeforeSetContentView() {}
-
-    /**
-     * 在 setContentView() 之后执行
-     */
-    open fun onAfterSetContentView() {}
 }

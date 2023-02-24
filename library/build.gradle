@@ -74,7 +74,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.wlmxenl'
                 artifactId = 'scaffold-android'
-                version = '2.0'
+                version = '2.0.6'
             }
         }
     }
