@@ -10,7 +10,8 @@ import com.wlmxenl.scaffold.paging.loadState.FullSpanAdapterType
 import com.wlmxenl.scaffold.paging.loadState.LoadState
 import com.wlmxenl.scaffold.paging.loadState.trailing.DefaultTrailingLoadStateAdapter
 import com.wlmxenl.scaffold.paging.loadState.trailing.TrailingLoadStateAdapter
-import com.wlmxenl.scaffold.statelayout.IStateLayout
+import com.wlmxenl.scaffold.stateview.IMultiStateView
+import com.wlmxenl.scaffold.stateview.ViewState
 
 /**
  *
@@ -20,7 +21,7 @@ import com.wlmxenl.scaffold.statelayout.IStateLayout
 class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListener {
     private val pagingRequest: IPagingRequest<T> = builder.pagingRequest
     private val pagingCallback: IPagingCallback? = builder.pagingCallback
-    private val pageStateView: IStateLayout? = builder.pageStateView
+    private val multiStateView: IMultiStateView? = builder.multiStateView
     private val refreshLayout: SmartRefreshLayout? = builder.refreshLayout
     private val rvList: RecyclerView = builder.recyclerView
     private val helper: QuickAdapterHelper
@@ -91,7 +92,7 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
 
         // 初次加载页面显示 Loading 状态
         if (mState == PagingState.ON_LOAD_FIRST_PAGE_DATA && helper.contentAdapter.models.isNullOrEmpty()) {
-            pageStateView?.setState(IStateLayout.LOADING)
+            multiStateView?.setState(ViewState.LOADING)
         }
 
         // 执行分页数据请求
@@ -159,9 +160,9 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
         setTrailingLoadState(!pagingFinished)
 
         // 设置页面状态
-        val newPageSate = if (helper.contentAdapter.models.isNullOrEmpty()) IStateLayout.EMPTY else IStateLayout.CONTENT
-        if (pageStateView?.getState() != newPageSate) {
-            pageStateView?.setState(newPageSate)
+        val newPageSate = if (helper.contentAdapter.models.isNullOrEmpty()) ViewState.EMPTY else ViewState.CONTENT
+        if (multiStateView?.getState() != newPageSate) {
+            multiStateView?.setState(newPageSate)
         }
 
         // 修改分页状态
@@ -173,7 +174,7 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
 
     private fun onLoadDataFailed(error: Throwable) {
         if (mState == PagingState.ON_LOAD_FIRST_PAGE_DATA || helper.contentAdapter.models.isNullOrEmpty()) {
-            pageStateView?.setState(IStateLayout.ERROR)
+            multiStateView?.setState(ViewState.ERROR)
         } else {
             helper.trailingLoadState = LoadState.Error(error)
         }
@@ -206,12 +207,10 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
         helper.trailingLoadState = LoadState.NotLoading(!hasLoadMore)
     }
 
-    val pagingAdapterHelper = helper
-
     class Builder<T> {
         internal lateinit var pagingRequest: IPagingRequest<T>
         internal var pagingCallback: IPagingCallback? = null
-        internal var pageStateView: IStateLayout? = null
+        internal var multiStateView: IMultiStateView? = null
         internal var refreshLayout: SmartRefreshLayout? = null
         internal lateinit var recyclerView: RecyclerView
         internal lateinit var adapter: ScaffoldPagingAdapter
@@ -225,10 +224,10 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
             this.pagingCallback = callback
         }
 
-        fun bindView(refreshLayout: SmartRefreshLayout?, recyclerView: RecyclerView, pageStateView: IStateLayout?) = apply {
+        fun bindView(refreshLayout: SmartRefreshLayout?, recyclerView: RecyclerView, multiStateView: IMultiStateView?) = apply {
             this.refreshLayout = refreshLayout
             this.recyclerView = recyclerView
-            this.pageStateView = pageStateView
+            this.multiStateView = multiStateView
         }
 
         fun setAdapter(adapter: ScaffoldPagingAdapter) = apply {

@@ -21,6 +21,6 @@
 
     <fragment
         android:id="@+id/state_layout_fragment"
-        android:name="com.wlmxenl.scaffold.sample.features.statelayout.StateLayoutSampleFragment" />
+        android:name="com.wlmxenl.scaffold.sample.features.statelayout.StateLayoutFragment" />
 
 </navigation>

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import com.wlmxenl.scaffold.R
-import com.wlmxenl.scaffold.statelayout.StateLayoutProvider
+import com.wlmxenl.scaffold.stateview.IMultiStateView
 
 /**
  * 页面跟布局相关操作工具类
@@ -19,16 +19,16 @@ internal object ScaffoldUtils {
         context: Context,
         contentView: View,
         appBarView: View? = null,
-        stateLayoutProvider: StateLayoutProvider?
+        multiStateView: IMultiStateView?
     ): View {
         // 无导航栏、无状态布局
-        if (appBarView == null && stateLayoutProvider == null) {
+        if (appBarView == null && multiStateView == null) {
             return contentView
         }
 
         // 无导航栏、有状态布局
-        if (appBarView == null && stateLayoutProvider != null) {
-            return stateLayoutProvider.convertContentView(contentView)
+        if (appBarView == null && multiStateView != null) {
+            return multiStateView.convertContentView(contentView)
         }
 
         val wrapperLayout = ConstraintLayout(context).apply {
@@ -48,7 +48,7 @@ internal object ScaffoldUtils {
             })
         }
 
-        wrapperLayout.addView(stateLayoutProvider?.convertContentView(contentView) ?: contentView,
+        wrapperLayout.addView(multiStateView?.convertContentView(contentView) ?: contentView,
             ConstraintLayout.LayoutParams(-1, 0).apply {
             if (mAppBarViewId != View.NO_ID) {
                 topToBottom = mAppBarViewId

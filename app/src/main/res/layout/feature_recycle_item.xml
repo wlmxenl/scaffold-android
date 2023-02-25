@@ -5,9 +5,11 @@
         <variable
             name="m"
             type="kotlin.Pair&lt;Integer, Integer&gt;" />
+
         <variable
             name="context"
             type="androidx.appcompat.app.AppCompatActivity" />
+
     </data>
 
     <TextView

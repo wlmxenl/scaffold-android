@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F3F3"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:viewBindingIgnore="true">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_stateview_error" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="页面加载失败，请稍后重试" />
+
+    <com.allen.library.shape.ShapeButton
+        android:id="@+id/btn_retry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_15"
+        android:padding="@dimen/dp_5"
+        android:text="重新加载"
+        android:textColor="#676C93"
+        android:textSize="@dimen/sp_12"
+        app:shapeCornersRadius="@dimen/dp_20"
+        app:shapeSizeHeight="0dp"
+        app:shapeSizeWidth="0dp"
+        app:shapeStrokeColor="#676C93"
+        app:shapeStrokeWidth="@dimen/dp_0_5" />
+
+</LinearLayout>

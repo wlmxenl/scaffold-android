@@ -17,7 +17,9 @@ class SamplePagingFragment : SampleBaseFragment<PagingListLayoutBinding>() {
     private lateinit var pagingExecutor: PagingExecutor<Any>
 
     override fun onPageViewCreated(savedInstanceState: Bundle?) {
-        appBarView?.setTitle(R.string.sample_paging)
+        appBarView?.setup {
+            setTitle(R.string.sample_paging)
+        }
 
         binding.rv.linear()
         val contentAdapter = ScaffoldPagingAdapter().apply {
@@ -26,7 +28,7 @@ class SamplePagingFragment : SampleBaseFragment<PagingListLayoutBinding>() {
 
         pagingExecutor = PagingExecutor.Builder<Any>()
             .setAdapter(contentAdapter)
-            .bindView(binding.refreshLayout, binding.rv, stateLayout)
+            .bindView(binding.refreshLayout, binding.rv, multiStateView)
             .setPagingRequest(SamplePagingRequest(viewLifecycleOwner))
             .build()
     }

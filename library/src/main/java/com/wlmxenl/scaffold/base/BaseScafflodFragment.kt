@@ -9,8 +9,7 @@ import android.view.animation.AnimationUtils
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import com.wlmxenl.scaffold.statelayout.IStateLayout
-import com.wlmxenl.scaffold.statelayout.StateLayoutProvider
+import com.wlmxenl.scaffold.stateview.IMultiStateView
 
 @Suppress("UNCHECKED_CAST")
 abstract class BaseScafflodFragment<VB : ViewBinding, AppBarView : View> : Fragment(),
@@ -18,7 +17,7 @@ abstract class BaseScafflodFragment<VB : ViewBinding, AppBarView : View> : Fragm
     private var _binding: VB? = null
     protected val binding get() = _binding!!
     protected var appBarView: AppBarView? = null
-    protected var stateLayout: IStateLayout? = null
+    protected var multiStateView: IMultiStateView? = null
     private var mTmpSavedFragmentState: Bundle? = null
     private var mIsEnterAnimationEnd = true
     protected var isLazyInitCompleted = false
@@ -30,10 +29,12 @@ abstract class BaseScafflodFragment<VB : ViewBinding, AppBarView : View> : Fragm
     ): View {
         _binding = onCreateViewBinding(inflater, container, false)
         appBarView = onCreateAppBarView() as? AppBarView
-        stateLayout = getStateLayoutProvider()
+        multiStateView = onCreateMultiStateView()
         return ScaffoldUtils.convertContentView(
-            requireActivity(), binding.root,
-            appBarView, stateLayout as? StateLayoutProvider
+            requireActivity(),
+            binding.root,
+            appBarView,
+            multiStateView
         )
     }
 

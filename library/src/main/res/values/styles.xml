@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="ScaffoldWindowTranslateAnimation">
+    <style name="scaffoldWindowTranslateAnimation">
         <item name="android:activityOpenEnterAnimation">@anim/scaffold_slide_in_right</item>
         <item name="android:activityOpenExitAnimation">@anim/scaffold_slide_out_left</item>
         <item name="android:activityCloseEnterAnimation">@anim/scaffold_slide_in_left</item>

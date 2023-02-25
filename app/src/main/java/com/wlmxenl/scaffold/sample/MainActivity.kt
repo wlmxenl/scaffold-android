@@ -1,44 +1,59 @@
 package com.wlmxenl.scaffold.sample
 
+import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.MenuItem
-import androidx.navigation.NavOptions
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
-import com.wlmxenl.scaffold.sample.base.SampleAppBarView
-import com.wlmxenl.scaffold.sample.base.SampleBaseActivity
-import com.blankj.utilcode.util.LogUtils
+import com.drake.brv.utils.setup
+import com.google.android.flexbox.FlexboxItemDecoration
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.wlmxenl.scafflod.sample.R
 import com.wlmxenl.scafflod.sample.databinding.ActivityMainBinding
-import com.wlmxenl.scaffold.statelayout.StateLayoutProvider
+import com.wlmxenl.scafflod.sample.databinding.FeatureRecycleItemBinding
+import com.wlmxenl.scaffold.sample.base.SampleBaseActivity
+import com.wlmxenl.scaffold.sample.common.dp2pxInt
+import com.wlmxenl.scaffold.sample.features.SampleActivity
+import com.wlmxenl.scaffold.stateview.IMultiStateView
 
 class MainActivity : SampleBaseActivity<ActivityMainBinding>() {
 
     override fun onPageViewCreated(savedInstanceState: Bundle?) {
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
-        binding.bottomNav.setupWithNavController(navController)
-        // 重写监听导航事件，去默认除切换动画
-        binding.bottomNav.setOnItemSelectedListener {
-            val navOptions = NavOptions.Builder()
-                .setLaunchSingleTop(true)
-                .build()
-            navController.navigate(it.itemId, null, navOptions)
-            true
+        appBarView?.setup {
+            setTitle(R.string.app_name)
+        }
+
+        binding.rv.run {
+            layoutManager = FlexboxLayoutManager(this@MainActivity)
+            addItemDecoration(FlexboxItemDecoration(this@MainActivity).apply {
+                setDrawable(object : ColorDrawable() {
+                    override fun getIntrinsicWidth(): Int {
+                        return 8f.dp2pxInt()
+                    }
+
+                    override fun getIntrinsicHeight(): Int {
+                        return 8f.dp2pxInt()
+                    }
+                })
+            })
+        }
+
+        binding.rv.setup {
+            addType<Pair<Int, Int>>(R.layout.feature_recycle_item)
+
+            onBind {
+                getBinding<FeatureRecycleItemBinding>().context = this@MainActivity
+            }
+
+            onClick(R.id.tv_demo_item) {
+                startActivity(Intent(this@MainActivity, SampleActivity::class.java).apply {
+                    putExtra("startDestination", getModel<Pair<Int, Int>>().second)
+                })
+            }
+        }.models = mutableListOf<Any?>().apply {
+            add(Pair(R.string.sample_state_layout, R.id.state_layout_fragment))
+            add(Pair(R.string.sample_paging, R.id.paging_fragment))
         }
     }
 
-    override fun loadData() {
-
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        LogUtils.d(item)
-        return super.onOptionsItemSelected(item)
-    }
-
-    // 首页不需要展示顶部应用栏和多状态布局
-    override fun onCreateAppBarView(): SampleAppBarView? = null
-    override fun getStateLayoutProvider(): StateLayoutProvider? = null
+    override fun onCreateMultiStateView(): IMultiStateView? = null
 
 }
