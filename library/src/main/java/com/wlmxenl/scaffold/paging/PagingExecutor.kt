@@ -6,12 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
-import com.wlmxenl.scaffold.paging.loadState.FullSpanAdapterType
 import com.wlmxenl.scaffold.paging.loadState.LoadState
 import com.wlmxenl.scaffold.paging.loadState.trailing.DefaultTrailingLoadStateAdapter
 import com.wlmxenl.scaffold.paging.loadState.trailing.TrailingLoadStateAdapter
 import com.wlmxenl.scaffold.stateview.IMultiStateView
 import com.wlmxenl.scaffold.stateview.ViewState
+import com.wlmxenl.scaffold.util.RecyclerViewUtils
 
 /**
  *
@@ -58,16 +58,7 @@ class PagingExecutor<T> private constructor(builder: Builder<T>): OnRefreshListe
 
         // 处理 SpanSizeLookup
         (rvList.layoutManager as? GridLayoutManager)?.run {
-            val oldSpanSizeLookup = spanSizeLookup
-            spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                override fun getSpanSize(position: Int): Int {
-                    if (position < 0) return 1
-                    return when(PagingUtils.getAdapterByItemPosition(concatAdapter, position)) {
-                        is FullSpanAdapterType -> spanCount
-                        else -> oldSpanSizeLookup?.getSpanSize(position) ?: 1
-                    }
-                }
-            }
+            RecyclerViewUtils.setGridFullSpan(concatAdapter, this)
         }
     }
 

@@ -1,11 +1,13 @@
 package com.wlmxenl.scaffold.paging.loadState.trailing
 
+import android.util.Log
 import androidx.annotation.CallSuper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.wlmxenl.scaffold.paging.loadState.LoadState
 import com.wlmxenl.scaffold.paging.loadState.LoadStateAdapter
+import com.wlmxenl.scaffold.util.RecyclerViewUtils
 
 /**
  * Tail load more parent class Adapter.
@@ -60,6 +62,7 @@ abstract class TrailingLoadStateAdapter<VH : RecyclerView.ViewHolder>(
 
     @CallSuper
     override fun onViewAttachedToWindow(holder: VH) {
+        RecyclerViewUtils.setStaggeredGridFullSpan(holder)
         loadAction()
     }
 

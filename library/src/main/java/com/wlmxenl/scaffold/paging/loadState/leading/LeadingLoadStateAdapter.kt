@@ -4,6 +4,7 @@ import androidx.annotation.CallSuper
 import androidx.recyclerview.widget.RecyclerView
 import com.wlmxenl.scaffold.paging.loadState.LoadState
 import com.wlmxenl.scaffold.paging.loadState.LoadStateAdapter
+import com.wlmxenl.scaffold.util.RecyclerViewUtils
 
 /**
  * Leading load state adapter
@@ -37,6 +38,7 @@ abstract class LeadingLoadStateAdapter<VH: RecyclerView.ViewHolder> : LoadStateA
 
     @CallSuper
     override fun onViewAttachedToWindow(holder: VH) {
+        RecyclerViewUtils.setStaggeredGridFullSpan(holder)
         loadAction()
     }
 
