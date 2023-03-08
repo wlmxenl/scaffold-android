@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/home_page_fragment">
-
-    <fragment
-        android:id="@+id/home_page_fragment"
-        android:name="com.wlmxenl.scaffold.sample.module.home.HomeFragment"
-        tools:layout="@layout/home_fragment_layout" />
-
-    <fragment
-        android:id="@+id/details_page_fragment"
-        android:name="com.wlmxenl.scaffold.sample.module.mine.MineFragment"
-        tools:layout="@layout/home_fragment_layout" />
+    android:id="@+id/nav_graph">
 
     <fragment
         android:id="@+id/paging_fragment"
