@@ -1,15 +1,16 @@
-package com.wlmxenl.scaffold.paging
+package com.wlmxenl.scaffold.pagination
 
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.wlmxenl.scaffold.paging.loadState.LoadState
-import com.wlmxenl.scaffold.paging.loadState.leading.LeadingLoadStateAdapter
-import com.wlmxenl.scaffold.paging.loadState.trailing.TrailingLoadStateAdapter
+import com.wlmxenl.scaffold.pagination.loadState.LoadState
+import com.wlmxenl.scaffold.pagination.loadState.leading.LeadingLoadStateAdapter
+import com.wlmxenl.scaffold.pagination.loadState.trailing.TrailingLoadStateAdapter
 import com.drake.brv.BindingAdapter
 import com.drake.brv.item.ItemAttached
+import com.wlmxenl.scaffold.pagination.loadState.leading.DefaultLeadingLoadStateAdapter
 
 class QuickAdapterHelper private constructor(
-    val contentAdapter: ScaffoldPagingAdapter,
+    val contentAdapter: ScaffoldBrvAdapter,
 
     /**
      * Adapter for loading more at the head.
@@ -26,8 +27,8 @@ class QuickAdapterHelper private constructor(
     config: ConcatAdapter.Config
 ) {
 
-    private val mBeforeList = ArrayList<ScaffoldPagingAdapter>(0)
-    private val mAfterList = ArrayList<ScaffoldPagingAdapter>(0)
+    private val mBeforeList = ArrayList<ScaffoldBrvAdapter>(0)
+    private val mAfterList = ArrayList<ScaffoldBrvAdapter>(0)
 
     /**
      * The adapter which is finally attached to the RecyclerView.
@@ -108,7 +109,7 @@ class QuickAdapterHelper private constructor(
      *
      * @param adapter Adapter<*>
      */
-    fun addBeforeAdapter(adapter: ScaffoldPagingAdapter) = apply {
+    fun addBeforeAdapter(adapter: ScaffoldBrvAdapter) = apply {
         addBeforeAdapter(mBeforeList.size, adapter)
     }
 
@@ -119,7 +120,7 @@ class QuickAdapterHelper private constructor(
      * @param index
      * @param adapter
      */
-    fun addBeforeAdapter(index: Int, adapter: ScaffoldPagingAdapter) = apply {
+    fun addBeforeAdapter(index: Int, adapter: ScaffoldBrvAdapter) = apply {
         if (index < 0 || index > mBeforeList.size) throw IndexOutOfBoundsException("Index must be between 0 and ${mBeforeList.size}. Given:${index}")
 
         if (index == 0) {
@@ -163,7 +164,7 @@ class QuickAdapterHelper private constructor(
      *
      * @param adapter Adapter<*>
      */
-    fun addAfterAdapter(adapter: ScaffoldPagingAdapter) = apply {
+    fun addAfterAdapter(adapter: ScaffoldBrvAdapter) = apply {
 
         lastAdapterOnViewAttachChangeListener?.let {
             if (mAfterList.isEmpty()) {
@@ -189,7 +190,7 @@ class QuickAdapterHelper private constructor(
      * @param index
      * @param adapter
      */
-    fun addAfterAdapter(index: Int, adapter: ScaffoldPagingAdapter) = apply {
+    fun addAfterAdapter(index: Int, adapter: ScaffoldBrvAdapter) = apply {
         if (index < 0 || index > mAfterList.size) throw IndexOutOfBoundsException("Index must be between 0 and ${mAfterList.size}. Given:${index}")
 
         if (index == mAfterList.size) {
@@ -225,15 +226,15 @@ class QuickAdapterHelper private constructor(
      * Get Adapter List before [contentAdapter]
      * 获取 [contentAdapter] 之前的 AdapterList
      */
-    val beforeAdapterList: List<ScaffoldPagingAdapter> get() = mBeforeList
+    val beforeAdapterList: List<ScaffoldBrvAdapter> get() = mBeforeList
 
     /**
      * Get Adapter List after [contentAdapter]
      * 获取 [contentAdapter] 之后的 AdapterList
      */
-    val afterAdapterList: List<ScaffoldPagingAdapter> get() = mAfterList
+    val afterAdapterList: List<ScaffoldBrvAdapter> get() = mAfterList
 
-    fun removeAdapter(adapter: ScaffoldPagingAdapter) = apply {
+    fun removeAdapter(adapter: ScaffoldBrvAdapter) = apply {
         if (adapter == contentAdapter) {
             return@apply
         }
@@ -267,7 +268,7 @@ class QuickAdapterHelper private constructor(
      * @property contentAdapter 主要内容的 Adapter
      * @constructor Create empty Builder
      */
-    class Builder(private val contentAdapter: ScaffoldPagingAdapter) {
+    class Builder(private val contentAdapter: ScaffoldBrvAdapter) {
 
         private var leadingLoadStateAdapter: LeadingLoadStateAdapter<*>? = null
         private var trailingLoadStateAdapter: TrailingLoadStateAdapter<*>? = null
@@ -286,7 +287,7 @@ class QuickAdapterHelper private constructor(
         fun setTrailingLoadStateAdapter(
             loadMoreListener: TrailingLoadStateAdapter.OnTrailingListener?
         ) = setTrailingLoadStateAdapter(
-            com.wlmxenl.scaffold.paging.loadState.trailing.DefaultTrailingLoadStateAdapter().apply {
+            com.wlmxenl.scaffold.pagination.loadState.trailing.DefaultTrailingLoadStateAdapter().apply {
                 setOnLoadMoreListener(loadMoreListener)
             }
         )
@@ -303,7 +304,7 @@ class QuickAdapterHelper private constructor(
         fun setLeadingLoadStateAdapter(
             loadListener: LeadingLoadStateAdapter.OnLeadingListener?
         ) = setLeadingLoadStateAdapter(
-            com.wlmxenl.scaffold.paging.loadState.leading.DefaultLeadingLoadStateAdapter().apply {
+            DefaultLeadingLoadStateAdapter().apply {
                 setOnLeadingListener(loadListener)
             }
         )

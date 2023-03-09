@@ -1,19 +1,19 @@
-package com.wlmxenl.scaffold.paging
+package com.wlmxenl.scaffold.pagination
 
 /**
  * 数据请求接口
  * @author wangzf
  * @date 2022/4/16
  */
-interface IPagingRequest<T> {
+interface PaginationRequest<T> {
 
     /**
      * 加载分页数据
      *
-     * @param pagingState 分页执行状态
+     * @param paginationState 分页执行状态
      * @return
      */
-    fun loadData(pagingState: PagingState, callback: Callback<T>)
+    fun loadData(paginationState: PaginationState, callback: Callback<T>)
 
 
     interface Callback<T> {

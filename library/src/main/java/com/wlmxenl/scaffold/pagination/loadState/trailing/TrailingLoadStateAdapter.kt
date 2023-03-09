@@ -1,12 +1,11 @@
-package com.wlmxenl.scaffold.paging.loadState.trailing
+package com.wlmxenl.scaffold.pagination.loadState.trailing
 
-import android.util.Log
 import androidx.annotation.CallSuper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.wlmxenl.scaffold.paging.loadState.LoadState
-import com.wlmxenl.scaffold.paging.loadState.LoadStateAdapter
+import com.wlmxenl.scaffold.pagination.loadState.LoadState
+import com.wlmxenl.scaffold.pagination.loadState.LoadStateAdapter
 import com.wlmxenl.scaffold.util.RecyclerViewUtils
 
 /**

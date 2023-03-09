@@ -1,4 +1,4 @@
-package com.wlmxenl.scaffold.paging.loadState
+package com.wlmxenl.scaffold.pagination.loadState
 
 /**
  * If Adapter needs full span, implement this interface.

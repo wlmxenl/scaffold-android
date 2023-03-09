@@ -1,9 +1,9 @@
-package com.wlmxenl.scaffold.paging.loadState.leading
+package com.wlmxenl.scaffold.pagination.loadState.leading
 
 import androidx.annotation.CallSuper
 import androidx.recyclerview.widget.RecyclerView
-import com.wlmxenl.scaffold.paging.loadState.LoadState
-import com.wlmxenl.scaffold.paging.loadState.LoadStateAdapter
+import com.wlmxenl.scaffold.pagination.loadState.LoadState
+import com.wlmxenl.scaffold.pagination.loadState.LoadStateAdapter
 import com.wlmxenl.scaffold.util.RecyclerViewUtils
 
 /**

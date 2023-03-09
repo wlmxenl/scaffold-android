@@ -1,4 +1,4 @@
-package com.wlmxenl.scaffold.paging.loadState
+package com.wlmxenl.scaffold.pagination.loadState
 
 import android.view.ViewGroup
 import androidx.annotation.CallSuper

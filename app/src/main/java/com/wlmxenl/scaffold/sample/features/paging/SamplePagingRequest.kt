@@ -1,8 +1,8 @@
 package com.wlmxenl.scaffold.sample.features.paging
 
 import androidx.lifecycle.LifecycleOwner
-import com.wlmxenl.scaffold.paging.IPagingRequest
-import com.wlmxenl.scaffold.paging.PagingState
+import com.wlmxenl.scaffold.pagination.PaginationRequest
+import com.wlmxenl.scaffold.pagination.PaginationState
 import com.blankj.utilcode.util.GsonUtils
 import com.drake.net.Get
 import com.drake.net.utils.scopeNetLife
@@ -14,16 +14,16 @@ import com.google.gson.JsonObject
  * @author wangzf
  * @date 2022/4/16
  */
-class SamplePagingRequest(private val lifecycleOwner: LifecycleOwner) : IPagingRequest<Any> {
+class SamplePagingRequest(private val lifecycleOwner: LifecycleOwner) : PaginationRequest<Any> {
     private var curPage = 1
     private var maxPage = 4
 
     override fun loadData(
-        pagingState: PagingState,
-        callback: IPagingRequest.Callback<Any>
+        paginationState: PaginationState,
+        callback: PaginationRequest.Callback<Any>
     ) {
         // 重置页码
-        if (pagingState == PagingState.ON_LOAD_FIRST_PAGE_DATA) {
+        if (paginationState == PaginationState.ON_LOAD_FIRST_PAGE_DATA) {
             curPage = 1
         }
 

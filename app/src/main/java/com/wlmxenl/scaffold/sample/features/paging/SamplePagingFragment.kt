@@ -9,8 +9,8 @@ import com.drake.brv.utils.staggered
 import com.wlmxenl.scafflod.sample.R
 import com.wlmxenl.scafflod.sample.databinding.PagingListLayoutBinding
 import com.wlmxenl.scaffold.navigation.scaffoldNavigate
-import com.wlmxenl.scaffold.paging.PagingExecutor
-import com.wlmxenl.scaffold.paging.ScaffoldPagingAdapter
+import com.wlmxenl.scaffold.pagination.BrvPaginationHelper
+import com.wlmxenl.scaffold.pagination.ScaffoldBrvAdapter
 import com.wlmxenl.scaffold.sample.base.SampleBaseFragment
 
 /**
@@ -19,7 +19,7 @@ import com.wlmxenl.scaffold.sample.base.SampleBaseFragment
  * @date 2022/4/16
  */
 class SamplePagingFragment : SampleBaseFragment<PagingListLayoutBinding>() {
-    private lateinit var pagingExecutor: PagingExecutor<Any>
+    private lateinit var brvPaginationHelper: BrvPaginationHelper<Any>
     private val type by lazy {
         arguments?.getInt("type") ?: R.id.linear
     }
@@ -62,7 +62,7 @@ class SamplePagingFragment : SampleBaseFragment<PagingListLayoutBinding>() {
             }
         }
 
-        val contentAdapter = ScaffoldPagingAdapter().apply {
+        val contentAdapter = ScaffoldBrvAdapter().apply {
             when (type) {
                 R.id.linear -> addType<SamplePagingItem>(R.layout.paging_linear_recycle_item)
                 R.id.grid -> addType<SamplePagingItem>(R.layout.paging_grid_recycle_item)
@@ -70,7 +70,7 @@ class SamplePagingFragment : SampleBaseFragment<PagingListLayoutBinding>() {
             }
         }
 
-        pagingExecutor = PagingExecutor.Builder<Any>()
+        brvPaginationHelper = BrvPaginationHelper.Builder<Any>()
             .setAdapter(contentAdapter)
             .bindView(binding.refreshLayout, binding.rv, multiStateView)
             .setPagingRequest(SamplePagingRequest(viewLifecycleOwner))
@@ -78,7 +78,7 @@ class SamplePagingFragment : SampleBaseFragment<PagingListLayoutBinding>() {
     }
 
     override fun onEnterAnimationEnd() {
-        pagingExecutor.loadFirstPageData()
+        brvPaginationHelper.loadFirstPageData()
     }
 
     private fun onLayoutManagerChanged(id: Int) {

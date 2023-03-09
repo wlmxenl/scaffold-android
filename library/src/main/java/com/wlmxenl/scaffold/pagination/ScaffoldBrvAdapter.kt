@@ -1,9 +1,9 @@
-package com.wlmxenl.scaffold.paging
+package com.wlmxenl.scaffold.pagination
 
 import com.drake.brv.BindingAdapter
 import com.drake.brv.item.ItemAttached
 
-open class ScaffoldPagingAdapter : BindingAdapter() {
+open class ScaffoldBrvAdapter : BindingAdapter() {
     private var onViewAttachStateChangeListeners: MutableList<ItemAttached>? = null
 
     override fun onViewAttachedToWindow(holder: BindingViewHolder) {

@@ -1,11 +1,11 @@
-package com.wlmxenl.scaffold.paging.loadState.trailing
+package com.wlmxenl.scaffold.pagination.loadState.trailing
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.wlmxenl.scaffold.R
-import com.wlmxenl.scaffold.paging.loadState.LoadState
+import com.wlmxenl.scaffold.pagination.loadState.LoadState
 
 /**
  * Default trailing load state adapter

@@ -4,8 +4,7 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.wlmxenl.scaffold.paging.PagingUtils
-import com.wlmxenl.scaffold.paging.loadState.FullSpanAdapterType
+import com.wlmxenl.scaffold.pagination.loadState.FullSpanAdapterType
 
 object RecyclerViewUtils {
 
@@ -22,7 +21,7 @@ object RecyclerViewUtils {
             spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     if (position < 0) return 1
-                    return when(PagingUtils.getAdapterByItemPosition(concatAdapter, position)) {
+                    return when(getAdapterByItemPosition(concatAdapter, position)) {
                         is FullSpanAdapterType -> spanCount
                         else -> oldSpanSizeLookup?.getSpanSize(position) ?: 1
                     }
@@ -30,6 +29,23 @@ object RecyclerViewUtils {
             }
         }
     }
+
+    fun getAdapterByItemPosition(concatAdapter: ConcatAdapter, position: Int):
+            RecyclerView.Adapter<out RecyclerView.ViewHolder>? {
+        var pos = position
+        val adapters = concatAdapter.adapters
+        for (adapter in adapters) {
+            when {
+                pos >= adapter.itemCount -> {
+                    pos -= adapter.itemCount
+                }
+                pos < 0 -> return null
+                else -> return adapter
+            }
+        }
+        return null
+    }
+
 
 
 }
