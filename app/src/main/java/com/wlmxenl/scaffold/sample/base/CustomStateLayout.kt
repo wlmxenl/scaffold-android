@@ -10,7 +10,7 @@ import com.wlmxenl.scaffold.stateview.IMultiStateView
 import com.wlmxenl.scaffold.stateview.OnStateChangeListener
 import com.wlmxenl.scaffold.stateview.ViewState
 
-class CustomMultiStateViewImpl : IMultiStateView {
+class CustomStateLayout : IMultiStateView {
     private var mStateLayout: StateLayout? = null
     private var mStateChangeListener: OnStateChangeListener? = null
     private var mViewClickConfigList = mutableListOf<Triple<ViewState, Int, OnClickListener?>>()
@@ -46,6 +46,7 @@ class CustomMultiStateViewImpl : IMultiStateView {
     }
 
     override fun setState(state: ViewState) {
+        mStateLayout?.trigger()
         when (state) {
             ViewState.CONTENT -> mStateLayout?.showContent()
             ViewState.LOADING -> mStateLayout?.showLoading()

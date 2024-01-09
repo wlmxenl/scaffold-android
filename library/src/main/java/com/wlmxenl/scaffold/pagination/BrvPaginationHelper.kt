@@ -25,7 +25,9 @@ class BrvPaginationHelper<T> private constructor(builder: Builder<T>): OnRefresh
     private val refreshLayout: SmartRefreshLayout? = builder.refreshLayout
     private val rvList: RecyclerView = builder.recyclerView
     private val helper: QuickAdapterHelper
+    private val viewStateMapping: Map<ViewState, ViewState>? = builder.viewStateMapping
     private var isRequesting = false
+
     var mState = PaginationState.ON_LOAD_FIRST_PAGE_DATA
         private set
 
@@ -83,7 +85,7 @@ class BrvPaginationHelper<T> private constructor(builder: Builder<T>): OnRefresh
 
         // 初次加载页面显示 Loading 状态
         if (mState == PaginationState.ON_LOAD_FIRST_PAGE_DATA && helper.contentAdapter.models.isNullOrEmpty()) {
-            multiStateView?.setState(ViewState.LOADING)
+            setViewState(ViewState.LOADING)
         }
 
         // 执行分页数据请求
@@ -151,9 +153,9 @@ class BrvPaginationHelper<T> private constructor(builder: Builder<T>): OnRefresh
         setTrailingLoadState(!pagingFinished)
 
         // 设置页面状态
-        val newPageSate = if (helper.contentAdapter.models.isNullOrEmpty()) ViewState.EMPTY else ViewState.CONTENT
-        if (multiStateView?.getState() != newPageSate) {
-            multiStateView?.setState(newPageSate)
+        val newViewState = if (helper.contentAdapter.models.isNullOrEmpty()) ViewState.EMPTY else ViewState.CONTENT
+        if (multiStateView?.getState() != newViewState) {
+            setViewState(newViewState)
         }
 
         // 修改分页状态
@@ -165,11 +167,15 @@ class BrvPaginationHelper<T> private constructor(builder: Builder<T>): OnRefresh
 
     private fun onLoadDataFailed(error: Throwable) {
         if (mState == PaginationState.ON_LOAD_FIRST_PAGE_DATA || helper.contentAdapter.models.isNullOrEmpty()) {
-            multiStateView?.setState(ViewState.ERROR)
+            setViewState(ViewState.ERROR)
         } else {
             helper.trailingLoadState = LoadState.Error(error)
         }
         pagingCallback?.onFillDataCompleted(mState)
+    }
+
+    private fun setViewState(state: ViewState) {
+        multiStateView?.setState(viewStateMapping?.get(state) ?: state)
     }
 
     /**
@@ -206,6 +212,7 @@ class BrvPaginationHelper<T> private constructor(builder: Builder<T>): OnRefresh
         internal lateinit var recyclerView: RecyclerView
         internal lateinit var adapter: ScaffoldBrvAdapter
         internal lateinit var trailingLoadStateAdapter: TrailingLoadStateAdapter<*>
+        internal var viewStateMapping: Map<ViewState, ViewState>? = null
 
         fun setPagingRequest(request: PaginationRequest<T>) = apply {
             this.pagingRequest = request
@@ -223,6 +230,12 @@ class BrvPaginationHelper<T> private constructor(builder: Builder<T>): OnRefresh
 
         fun setAdapter(adapter: ScaffoldBrvAdapter) = apply {
             this.adapter = adapter
+        }
+
+        fun setViewStateMapping(viewStateMapping: Map<ViewState, ViewState>) = apply {
+            if (viewStateMapping.isNotEmpty()) {
+                this.viewStateMapping = viewStateMapping
+            }
         }
 
         fun setCustomTrailingLoadStateAdapter(stateAdapter: TrailingLoadStateAdapter<*>) {

@@ -20,10 +20,11 @@ import com.wlmxenl.scaffold.stateview.ViewState
 class BrvahPaginationHelper<T> private constructor(builder: Builder<T>): OnRefreshListener, OnLoadMoreListener {
     private val pagingRequest: PaginationRequest<T> = builder.pagingRequest
     private val pagingCallback: PaginationCallback? = builder.pagingCallback
-    private val pageStateView: IMultiStateView? = builder.pageStateView
+    private val multiStateView: IMultiStateView? = builder.multiStateView
     private val refreshLayout: RefreshLayout? = builder.refreshLayout
     private val rvList: RecyclerView = builder.recyclerView
     private val rvAdapter: BaseQuickAdapter<T, BaseViewHolder> = builder.adapter
+    private val viewStateMapping: Map<ViewState, ViewState>? = builder.viewStateMapping
     var mState = PaginationState.ON_LOAD_FIRST_PAGE_DATA
         private set
     var isRequesting = false // 防止数据填充不满一屏 并且 可以继续翻页时，会触发2次 onLoadMore
@@ -67,7 +68,7 @@ class BrvahPaginationHelper<T> private constructor(builder: Builder<T>): OnRefre
 
         // 初次加载页面显示 Loading 状态
         if (mState == PaginationState.ON_LOAD_FIRST_PAGE_DATA && rvAdapter.data.isEmpty()) {
-            pageStateView?.setState(ViewState.LOADING)
+            setViewState(ViewState.LOADING)
         }
         // 执行分页数据请求
         rvList.post {
@@ -116,9 +117,9 @@ class BrvahPaginationHelper<T> private constructor(builder: Builder<T>): OnRefre
         }
 
         // 设置页面状态
-        val newPageSate = if (rvAdapter.data.isEmpty()) ViewState.EMPTY else ViewState.CONTENT
-        if (pageStateView?.getState() != newPageSate) {
-            pageStateView?.setState(newPageSate)
+        val newViewState = if (rvAdapter.data.isEmpty()) ViewState.EMPTY else ViewState.CONTENT
+        if (multiStateView?.getState() != newViewState) {
+            setViewState(newViewState)
         }
 
         // 修改分页状态
@@ -130,7 +131,7 @@ class BrvahPaginationHelper<T> private constructor(builder: Builder<T>): OnRefre
 
     private fun onLoadDataFailed() {
         if (mState == PaginationState.ON_LOAD_FIRST_PAGE_DATA || rvAdapter.data.isEmpty()) {
-            pageStateView?.setState(ViewState.ERROR)
+            setViewState(ViewState.ERROR)
         } else {
             rvAdapter.loadMoreModule.loadMoreFail()
         }
@@ -154,14 +155,20 @@ class BrvahPaginationHelper<T> private constructor(builder: Builder<T>): OnRefre
         }
     }
 
+    private fun setViewState(state: ViewState) {
+        multiStateView?.setState(viewStateMapping?.get(state) ?: state)
+    }
+
+
     class Builder<T> {
         internal lateinit var pagingRequest: PaginationRequest<T>
         internal var pagingCallback: PaginationCallback? = null
-        internal var pageStateView: IMultiStateView? = null
+        internal var multiStateView: IMultiStateView? = null
         internal var refreshLayout: RefreshLayout? = null
         internal lateinit var recyclerView: RecyclerView
         internal lateinit var adapter: BaseQuickAdapter<T, BaseViewHolder>
         internal var showLoadMoreEndView = true
+        internal var viewStateMapping: Map<ViewState, ViewState>? = null
 
         fun setPagingRequest(request: PaginationRequest<T>) = apply {
             this.pagingRequest = request
@@ -174,7 +181,13 @@ class BrvahPaginationHelper<T> private constructor(builder: Builder<T>): OnRefre
         fun bindView(refreshLayout: RefreshLayout?, recyclerView: RecyclerView, pageStateView: IMultiStateView?) = apply {
             this.recyclerView = recyclerView
             this.refreshLayout = refreshLayout
-            this.pageStateView = pageStateView
+            this.multiStateView = pageStateView
+        }
+
+        fun setViewStateMapping(viewStateMapping: Map<ViewState, ViewState>) = apply {
+            if (viewStateMapping.isNotEmpty()) {
+                this.viewStateMapping = viewStateMapping
+            }
         }
 
         fun setAdapter(adapter: BaseQuickAdapter<T, BaseViewHolder>) = apply {

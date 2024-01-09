@@ -36,7 +36,7 @@ abstract class SampleAbstractActivity<VB : ViewBinding, AppBarView : View> : Bas
     }
 
     override fun onCreateMultiStateView(): IMultiStateView? {
-        return CustomMultiStateViewImpl()
+        return CustomStateLayout()
     }
 
 }

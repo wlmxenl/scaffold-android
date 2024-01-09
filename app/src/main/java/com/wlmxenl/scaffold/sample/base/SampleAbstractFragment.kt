@@ -25,7 +25,7 @@ abstract class SampleAbstractFragment<VB : ViewBinding, AppBarView : View> : com
     }
 
     override fun onCreateMultiStateView(): IMultiStateView? {
-        return CustomMultiStateViewImpl().apply {
+        return CustomStateLayout().apply {
             setViewClickListener(ViewState.ERROR, R.id.btn_retry) {
                 loadData()
             }
