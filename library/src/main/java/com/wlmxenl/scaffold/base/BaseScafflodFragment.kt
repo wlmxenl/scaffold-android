@@ -112,4 +112,8 @@ abstract class BaseScafflodFragment<VB : ViewBinding, AppBarView : View> : Fragm
     }
 
     open fun onInterceptBackPressedEvent() = false
+
+    protected fun isBindingAvailable(): Boolean {
+        return _binding != null
+    }
 }
