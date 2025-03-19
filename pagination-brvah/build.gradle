@@ -53,7 +53,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.wlmxenl.scaffold'
                 artifactId = 'pagination-brvah'
-                version = rootProject.ext.lib_version
+                version = rootProject.ext.published_maven_version
             }
         }
     }

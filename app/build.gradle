@@ -5,6 +5,7 @@ plugins {
 }
 
 android {
+    namespace 'com.wlmxenl.scafflod.sample'
     compileSdk rootProject.ext.compileSdkVersion
 
     defaultConfig {
@@ -53,6 +54,7 @@ android {
         dataBinding true
         viewBinding true
     }
+
 }
 
 dependencies {
