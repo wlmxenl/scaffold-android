@@ -1,6 +1,6 @@
 plugins {
     id 'com.android.library'
-    id 'kotlin-android'
+    id 'org.jetbrains.kotlin.android'
     id 'maven-publish'
 }
 
@@ -47,13 +47,13 @@ android {
 
 dependencies {
     // https://developer.android.com/jetpack/androidx/releases/core
-    api "androidx.core:core-ktx:1.10.1"
+    api "androidx.core:core-ktx:1.13.1"
     // https://developer.android.com/jetpack/androidx/releases/appcompat
-    api "androidx.appcompat:appcompat:1.6.1"
+    api "androidx.appcompat:appcompat:1.7.1"
     // https://developer.android.com/jetpack/androidx/releases/constraintlayout
-    api "androidx.constraintlayout:constraintlayout:2.1.4"
+    api "androidx.constraintlayout:constraintlayout:2.2.1"
     // https://developer.android.com/jetpack/androidx/releases/navigation
-    def nav_version = "2.6.0"
+    def nav_version = "2.7.7"
     api "androidx.navigation:navigation-fragment-ktx:$nav_version"
     api "androidx.navigation:navigation-ui-ktx:$nav_version"
     // https://developer.android.com/jetpack/androidx/releases/recyclerview
