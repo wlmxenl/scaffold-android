@@ -51,6 +51,7 @@ class MainActivity : SampleBaseActivity<ActivityMainBinding>() {
         }.models = mutableListOf<Any?>().apply {
             add(Pair(R.string.sample_state_layout, R.id.state_layout_fragment))
             add(Pair(R.string.sample_paging, R.id.paging_fragment))
+            add(Pair(R.string.sample_view_pager_default_item, R.id.view_pager_default_item_fragment))
         }
     }
 

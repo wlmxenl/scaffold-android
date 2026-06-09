@@ -10,4 +10,8 @@
         android:id="@+id/state_layout_fragment"
         android:name="com.wlmxenl.scaffold.sample.features.statelayout.StateLayoutFragment" />
 
+    <fragment
+        android:id="@+id/view_pager_default_item_fragment"
+        android:name="com.wlmxenl.scaffold.sample.features.viewpager.ViewPagerDefaultItemFragment" />
+
 </navigation>

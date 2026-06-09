@@ -7,4 +7,6 @@
     <string name="sample_paging">列表分页</string>
     <string name="sample_state_layout">状态布局切换</string>
 
+    <string name="sample_view_pager_default_item">ViewPager 默认下标</string>
+
 </resources>
