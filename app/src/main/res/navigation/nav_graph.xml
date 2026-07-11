@@ -14,4 +14,8 @@
         android:id="@+id/view_pager_default_item_fragment"
         android:name="com.wlmxenl.scaffold.sample.features.viewpager.ViewPagerDefaultItemFragment" />
 
+    <fragment
+        android:id="@+id/media_picker_fragment"
+        android:name="com.wlmxenl.scaffold.sample.features.mediapicker.PhotoPickerFragment" />
+
 </navigation>

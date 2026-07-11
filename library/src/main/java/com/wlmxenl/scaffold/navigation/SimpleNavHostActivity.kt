@@ -26,15 +26,17 @@ abstract class SimpleNavHostActivity :
     }
 
     override fun onPageViewCreated(savedInstanceState: Bundle?) {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navHostFragment.navController.apply {
-            val navGraph = navInflater.inflate(getNavGraphResId()).apply {
-                if (getCustomStartDestination() != 0) {
-                    setStartDestination(getCustomStartDestination())
+        if (savedInstanceState == null) {
+            val navHostFragment =
+                supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            navHostFragment.navController.apply {
+                val navGraph = navInflater.inflate(getNavGraphResId()).apply {
+                    if (getCustomStartDestination() != 0) {
+                        setStartDestination(getCustomStartDestination())
+                    }
                 }
+                setGraph(navGraph, getStartDestinationArgs())
             }
-            setGraph(navGraph, getStartDestinationArgs())
         }
     }
 

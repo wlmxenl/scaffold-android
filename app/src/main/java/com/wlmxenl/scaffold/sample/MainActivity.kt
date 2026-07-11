@@ -52,6 +52,7 @@ class MainActivity : SampleBaseActivity<ActivityMainBinding>() {
             add(Pair(R.string.sample_state_layout, R.id.state_layout_fragment))
             add(Pair(R.string.sample_paging, R.id.paging_fragment))
             add(Pair(R.string.sample_view_pager_default_item, R.id.view_pager_default_item_fragment))
+            add(Pair(R.string.sample_media_picker, R.id.media_picker_fragment))
         }
     }
 

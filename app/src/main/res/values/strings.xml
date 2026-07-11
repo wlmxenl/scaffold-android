@@ -9,4 +9,17 @@
 
     <string name="sample_view_pager_default_item">ViewPager 默认下标</string>
 
+    <string name="sample_media_picker">媒体选择器</string>
+
+    <string name="media_picker_image_single">单选图片</string>
+    <string name="media_picker_image_multiple">多选图片</string>
+    <string name="media_picker_video_single">单选视频</string>
+    <string name="media_picker_video_multiple">多选视频</string>
+    <string name="media_picker_mixed_single">单选图片和视频</string>
+    <string name="media_picker_mixed_multiple">多选图片和视频</string>
+    <string name="media_picker_gif_single">单选 GIF</string>
+    <string name="media_picker_result_idle">请选择媒体类型。</string>
+    <string name="media_picker_result_cancelled">%1$s：已取消</string>
+    <string name="media_picker_result_selected">%1$s：已选择 %2$d 项\n%3$s</string>
+
 </resources>
